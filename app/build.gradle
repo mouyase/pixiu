@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.github.xuexiangjys:XHttp2:2.0.1'
 
     implementation 'com.google.code.gson:gson:2.8.6'
+    //noinspection GradleDependency
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
