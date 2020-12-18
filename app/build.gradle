@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+def APP_PROPERTIES = new Properties()
+APP_PROPERTIES.load(new FileInputStream(project.rootProject.file("app.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
@@ -15,15 +18,11 @@ android {
     }
 
     signingConfigs {
-        release {
-            def keystoreProperties = new Properties()
-            def keystorePropertiesFile = project.rootProject.file("keystore.properties")
-            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
+        config {
+            storeFile file(APP_PROPERTIES['storeFile'])
+            storePassword APP_PROPERTIES['storePassword']
+            keyAlias APP_PROPERTIES['keyAlias']
+            keyPassword APP_PROPERTIES['keyPassword']
         }
     }
 
@@ -32,13 +31,13 @@ android {
             zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
         }
         debug {
             zipAlignEnabled false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
         }
     }
 
@@ -75,12 +74,8 @@ dependencies {
 apply plugin: 'com.mob.sdk'
 
 MobSDK {
-    def MobSDKProperties = new Properties()
-    def MobSDKPropertiesFile = project.rootProject.file("MobSDK.properties")
-    MobSDKProperties.load(new FileInputStream(MobSDKPropertiesFile))
-
-    appKey file(MobSDKProperties['appKey'])
-    appSecret MobSDKProperties['appSecret']
+    appKey APP_PROPERTIES['appKey']
+    appSecret APP_PROPERTIES['appSecret']
 
     MobPush {}
 }
