@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.xuexiang.xui.utils.StatusBarUtils;
 
@@ -28,7 +29,7 @@ public class RouterActivity extends AppCompatActivity {
     }
 
     void route() {
-        new Handler().postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             String accessToken = YSetting.get(Value.SETTING_ACCESS_TOKEN, "");
             if (accessToken.equals("")) {
                 startActivity(new Intent(this, LoginActivity.class));

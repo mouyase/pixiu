@@ -19,4 +19,6 @@ public class Value {
     public static final String PIXIV_BASE_HASH = "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c";
     public static final String PIXIV_CLIENT_ID = "MOBrBDS8blbauoSck0ZfDbtuzpyT";
     public static final String PIXIV_CLIENT_SECRET = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj";
+
+    public static final String URL_OAUTH = "https://oauth.secure.128512.xyz/auth/token";
 }

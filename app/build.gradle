@@ -15,8 +15,11 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
-
+    viewBinding {
+        enabled = true
+    }
     signingConfigs {
         config {
             storeFile file(APP_PROPERTIES['storeFile'])
@@ -40,7 +43,6 @@ android {
             signingConfig signingConfigs.config
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

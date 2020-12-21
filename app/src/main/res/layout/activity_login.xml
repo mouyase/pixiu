@@ -62,13 +62,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <com.xuexiang.xui.widget.button.ButtonView
                 android:id="@+id/btn_login"
+                style="@style/ButtonView.Blue"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="登陆"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <!--            <Button-->
+            <!--                android:id="@+id/btn_login"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="登陆"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 

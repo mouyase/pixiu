@@ -3,6 +3,8 @@ package tech.yojigen.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import java.util.Map;
 
 /**
@@ -59,5 +61,24 @@ public class YSetting {
         mEditor = YUtil.getInstance().getContext().getSharedPreferences(YUtil.getInstance().getContext().getPackageName() + ".setting", Context.MODE_PRIVATE).edit();
         mEditor.remove(key);
         mEditor.apply();
+    }
+
+    public static <T> void setObject(String key, T object) {
+        Gson gson = new Gson();
+        mEditor = YUtil.getInstance().getContext().getSharedPreferences(YUtil.getInstance().getContext().getPackageName() + ".setting", Context.MODE_PRIVATE).edit();
+        mEditor.putString(key, gson.toJson(object));
+        mEditor.apply();
+    }
+
+    public static <T> T getObject(String key, Class<T> classOfT) {
+        Gson gson = new Gson();
+        Map<String, ?> settingMap = YUtil.getInstance().getContext().getSharedPreferences(YUtil.getInstance().getContext().getPackageName() + ".setting", Context.MODE_PRIVATE).getAll();
+        if (settingMap.containsKey(key)) {
+            Object value = settingMap.get(key);
+            if (value instanceof String) {
+                return gson.fromJson((String) value, classOfT);
+            }
+        }
+        return null;
     }
 }

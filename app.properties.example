@@ -1,8 +1,8 @@
 #签名相关
-storePassword=
-keyPassword=
-keyAlias=
 storeFile=
+storePassword=
+keyAlias=
+keyPassword=
 
 #MobSDK
 appKey=
