@@ -4,14 +4,17 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 
+import tech.yojigen.android.SingleLiveEvent;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.UserAccountDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivForm;
+import tech.yojigen.util.YSetting;
 
 public class LoginViewModel extends ViewModel {
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
+    private final SingleLiveEvent onLoginSuccess = new SingleLiveEvent<>();
 
     public void login(String username, String password) {
         username = username.trim().toLowerCase();
@@ -34,7 +37,13 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(String body) {
                 UserAccountDTO userAccountDTO = gson.fromJson(body, UserAccountDTO.class);
+                YSetting.setObject(Value.SETTING_ACCOUNT, userAccountDTO);
+                onLoginSuccess.postValue();
             }
         });
+    }
+
+    public SingleLiveEvent getOnLoginSuccess() {
+        return onLoginSuccess;
     }
 }

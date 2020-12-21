@@ -7,6 +7,7 @@ public class Value {
     public static final String SETTING_REFRESH_TOKEN = "refresh_token";
     public static final String SETTING_USERNAME = "username";
     public static final String SETTING_PASSWORD = "password";
+    public static final String SETTING_ACCOUNT = "SETTING_ACCOUNT";
 
 
     public static final String PIXIV_APP_VERSION = "5.0.250";

@@ -28,4 +28,13 @@ public class UserAccountDTO {
     public UserDTO getUser() {
         return user;
     }
+
+    @Override
+    public String toString() {
+        return "UserAccountDTO{" +
+                "accessToken='" + accessToken + '\'' +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", deviceToken='" + deviceToken + '\'' +
+                '}';
+    }
 }

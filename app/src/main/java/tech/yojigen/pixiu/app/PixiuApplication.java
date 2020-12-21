@@ -6,13 +6,18 @@ import android.graphics.YuvImage;
 import com.mob.MobSDK;
 import com.xuexiang.xui.XUI;
 
+import tech.yojigen.pixiu.dto.UserAccountDTO;
+import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YUtil;
 
 public class PixiuApplication extends Application {
+    private static Data data = new Data();
+
     @Override
     public void onCreate() {
         super.onCreate();
         initApplication();
+        initData();
     }
 
     void initApplication() {
@@ -33,5 +38,20 @@ public class PixiuApplication extends Application {
 //                System.err.println("隐私协议授权结果提交: 失败");
 //            }
 //        });
+    }
+
+    private void initData() {
+        UserAccountDTO userAccountDTO = YSetting.getObject(Value.SETTING_ACCOUNT, UserAccountDTO.class);
+        if (userAccountDTO != null) {
+            data.setUserAccount(userAccountDTO);
+            data.setAccessToken(userAccountDTO.getAccessToken());
+            data.setRefreshToken(userAccountDTO.getRefreshToken());
+            data.setDeviceToken(userAccountDTO.getDeviceToken());
+            data.setUser(userAccountDTO.getUser());
+        }
+    }
+
+    public static Data getData() {
+        return data;
     }
 }

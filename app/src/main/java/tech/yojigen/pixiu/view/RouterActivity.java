@@ -11,7 +11,9 @@ import android.os.Looper;
 import com.xuexiang.xui.utils.StatusBarUtils;
 
 import tech.yojigen.pixiu.R;
+import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
+import tech.yojigen.pixiu.dto.UserAccountDTO;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
 import tech.yojigen.pixiu.viewmodel.RouterViewModel;
 import tech.yojigen.util.YSetting;
@@ -30,12 +32,13 @@ public class RouterActivity extends AppCompatActivity {
 
     void route() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            String accessToken = YSetting.get(Value.SETTING_ACCESS_TOKEN, "");
-            if (accessToken.equals("")) {
-                startActivity(new Intent(this, LoginActivity.class));
-            } else {
-                startActivity(new Intent(this, MainActivity.class));
-            }
+//            UserAccountDTO userAccountDTO = PixiuApplication.getData().getUserAccount();
+//            if (userAccountDTO == null) {
+//                startActivity(new Intent(this, LoginActivity.class));
+//            } else {
+//                startActivity(new Intent(this, MainActivity.class));
+//            }
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }, 1000);
     }
