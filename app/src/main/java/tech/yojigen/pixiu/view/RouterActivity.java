@@ -32,13 +32,13 @@ public class RouterActivity extends AppCompatActivity {
 
     void route() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-//            UserAccountDTO userAccountDTO = PixiuApplication.getData().getUserAccount();
-//            if (userAccountDTO == null) {
-//                startActivity(new Intent(this, LoginActivity.class));
-//            } else {
-//                startActivity(new Intent(this, MainActivity.class));
-//            }
-            startActivity(new Intent(this, LoginActivity.class));
+            UserAccountDTO userAccountDTO = PixiuApplication.getData().getUserAccount();
+            if (userAccountDTO == null) {
+                startActivity(new Intent(this, LoginActivity.class));
+            } else {
+                startActivity(new Intent(this, MainActivity.class));
+            }
+//            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }, 1000);
     }

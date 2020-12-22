@@ -12,34 +12,44 @@ public class UserDTO {
 
     public class ImageUrls {
         @SerializedName("px_16x16")
-        private String small;
+        private String px16;
         @SerializedName("px_50x50")
-        private String middle;
+        private String px50;
         @SerializedName("px_170x170")
-        private String large;
+        private String px170;
+        @SerializedName("medium")
+        private String medium;
 
-        public String getSmall() {
-            return small;
+        public String getPx16() {
+            return px16;
         }
 
-        public void setSmall(String small) {
-            this.small = small;
+        public void setPx16(String px16) {
+            this.px16 = px16;
         }
 
-        public String getMiddle() {
-            return middle;
+        public String getPx50() {
+            return px50;
         }
 
-        public void setMiddle(String middle) {
-            this.middle = middle;
+        public void setPx50(String px50) {
+            this.px50 = px50;
         }
 
-        public String getLarge() {
-            return large;
+        public String getPx170() {
+            return px170;
         }
 
-        public void setLarge(String large) {
-            this.large = large;
+        public void setPx170(String px170) {
+            this.px170 = px170;
+        }
+
+        public String getMedium() {
+            return medium;
+        }
+
+        public void setMedium(String medium) {
+            this.medium = medium;
         }
     }
 

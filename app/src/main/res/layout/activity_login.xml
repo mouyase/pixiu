@@ -8,15 +8,14 @@
 
     <ImageView
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_marginBottom="32dp"
-        android:scaleType="fitEnd"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_logo"
-        app:tint="#000000" />
+        app:tint="@android:color/darker_gray" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -34,31 +33,39 @@
             android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="pixiv ID或邮箱"
             android:textSize="18sp"
             app:met_clearButton="true"
             app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="14sp"
             app:met_textColorHint="#666666" />
 
         <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="密码"
             android:textSize="18sp"
             app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="14sp"
             app:met_passWordButton="true"
             app:met_textColorHint="#666666" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
 
             <Button
                 android:id="@+id/btn_regist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="创建账号"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,9 +74,10 @@
                 style="@style/ButtonView.Blue"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
                 android:text="登陆"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

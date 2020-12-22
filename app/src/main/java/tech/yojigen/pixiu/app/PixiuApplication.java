@@ -27,17 +27,6 @@ public class PixiuApplication extends Application {
 
         MobSDK.init(this);//初始化MobSDK
         YUtil.getInstance().init(this);
-//        MobSDK.submitPolicyGrantResult(true, new OperationCallback<Void>() {
-//            @Override
-//            public void onComplete(Void data) {
-//                System.out.println("隐私协议授权结果提交: 成功");
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                System.err.println("隐私协议授权结果提交: 失败");
-//            }
-//        });
     }
 
     private void initData() {
@@ -53,5 +42,16 @@ public class PixiuApplication extends Application {
 
     public static Data getData() {
         return data;
+    }
+
+    public static void setData(UserAccountDTO userAccountDTO) {
+        if (userAccountDTO != null) {
+            YSetting.setObject(Value.SETTING_ACCOUNT, userAccountDTO);
+            data.setUserAccount(userAccountDTO);
+            data.setAccessToken(userAccountDTO.getAccessToken());
+            data.setRefreshToken(userAccountDTO.getRefreshToken());
+            data.setDeviceToken(userAccountDTO.getDeviceToken());
+            data.setUser(userAccountDTO.getUser());
+        }
     }
 }
