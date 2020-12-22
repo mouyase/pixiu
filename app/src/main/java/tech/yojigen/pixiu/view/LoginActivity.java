@@ -22,9 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         viewBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        initViewModel();
         initView();
         initViewEvent();
+        initViewModel();
     }
 
     protected void initViewModel() {

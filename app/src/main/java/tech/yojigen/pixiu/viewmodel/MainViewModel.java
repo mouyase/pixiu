@@ -19,17 +19,21 @@ import tech.yojigen.pixiu.network.PixivData;
 
 public class MainViewModel extends ViewModel {
     private Gson gson = new Gson();
-    private MutableLiveData<List> recommendList = new MutableLiveData();
+    private MutableLiveData<List<IllustDTO>> recommendList = new MutableLiveData();
     private Map recommendMap = new HashMap<>();
     private int recommendListPage = 0;
-    private MutableLiveData<List> followedList = new MutableLiveData();
+    private String recommendNextUrl;
+    private MutableLiveData<List<IllustDTO>> followedList = new MutableLiveData();
     private Map followedMap = new HashMap<>();
     private int followedListPage = 0;
+    private String followedNextUrl;
 
-//    MainViewModel() {
-//        recommendList.setValue(new ArrayList());
-//        followedList.setValue(new ArrayList());
-//    }
+    private MutableLiveData<String> coverImageUrl = new MutableLiveData();
+
+    public MainViewModel() {
+        recommendList.setValue(new ArrayList());
+        followedList.setValue(new ArrayList());
+    }
 
     public void getRecommendData() {
         PixivData pixivData = new PixivData.Builder()
@@ -45,10 +49,24 @@ public class MainViewModel extends ViewModel {
             @Override
             public void onResponse(String body) {
                 RecommendDTO recommendDTO = gson.fromJson(body, RecommendDTO.class);
-                for (IllustDTO illustDTO : recommendDTO.getIllustList()) {
-                    System.out.println(illustDTO.getTitle());
+                if (recommendDTO.getRankingIllustList().size() > 0) {
+                    coverImageUrl.postValue(recommendDTO.getRankingIllustList().get(0).getImageUrls().getMedium());
                 }
+                for (IllustDTO illustDTO : recommendDTO.getIllustList()) {
+                    recommendMap.put(illustDTO.getId(), illustDTO);
+                }
+                recommendNextUrl = recommendDTO.getNextUrl();
+                List<IllustDTO> illusts = new ArrayList<IllustDTO>(recommendMap.values());
+                recommendList.postValue(illusts);
             }
         });
+    }
+
+    public MutableLiveData<String> getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public MutableLiveData<List<IllustDTO>> getRecommendList() {
+        return recommendList;
     }
 }

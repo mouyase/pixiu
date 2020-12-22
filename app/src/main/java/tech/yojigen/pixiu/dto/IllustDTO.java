@@ -21,6 +21,49 @@ public class IllustDTO {
     int height;
     @SerializedName("user")
     UserDTO user;
+    @SerializedName("image_urls")
+    ImageUrls imageUrls;
+
+    public class ImageUrls {
+        @SerializedName("square_medium")
+        String square;
+        @SerializedName("medium")
+        String medium;
+        @SerializedName("large")
+        String large;
+
+        public String getSquare() {
+            return square;
+        }
+
+        public void setSquare(String square) {
+            this.square = square;
+        }
+
+        public String getMedium() {
+            return medium;
+        }
+
+        public void setMedium(String medium) {
+            this.medium = medium;
+        }
+
+        public String getLarge() {
+            return large;
+        }
+
+        public void setLarge(String large) {
+            this.large = large;
+        }
+    }
+
+    public ImageUrls getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(ImageUrls imageUrls) {
+        this.imageUrls = imageUrls;
+    }
 
     public String getId() {
         return id;

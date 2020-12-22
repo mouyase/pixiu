@@ -37,7 +37,7 @@ public class PixivClient {
         return mPixivClient;
     }
 
-    private OkHttpClient getClient() {
+    public OkHttpClient getClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(60, TimeUnit.SECONDS);
         builder.readTimeout(600, TimeUnit.SECONDS);
