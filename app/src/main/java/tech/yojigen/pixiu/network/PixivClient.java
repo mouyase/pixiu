@@ -145,8 +145,11 @@ public class PixivClient {
     }
 
     public void get(String url, PixivData pixivData, PixivCallback pixivCallback) {
+        if (pixivData != null) {
+            url = url + pixivData.getQuery();
+        }
         Request request = new Request.Builder()
-                .url(url + pixivData.getQuery())
+                .url(url)
                 .build();
         Call call = getClient().newCall(request);
         call.enqueue(new Callback() {

@@ -27,7 +27,7 @@ public class LoginViewModel extends ViewModel {
                 .set("grant_type", "password")
                 .set("device_token", "pixiv")
                 .set("get_secure_url", true)
-                .set("include_policy", false)
+                .set("include_policy", true)
                 .build();
         PixivClient.getInstance().post(Value.URL_OAUTH, pixivData, new PixivCallback() {
             @Override

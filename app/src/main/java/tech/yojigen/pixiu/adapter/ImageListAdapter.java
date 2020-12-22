@@ -51,16 +51,10 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
         layoutParams.height = height;
         layoutParams.width = imageWidth;
         holder.itemView.setLayoutParams(layoutParams);
-        System.out.println(illusts.get(position).getTitle() + "| " + imageWidth + " " + "| " + height + " ");
-        System.out.println(illusts.get(position).getImageUrls().getMedium().replace("pximg.net", "pixiv.cat"));
-//        if (TextUtils.isEmpty(imageTag) || imageTag.endsWith(illusts.get(position).getImageUrls().getMedium())) {
         Glide.with(holder.itemView.getContext())
                 .load(illusts.get(position).getImageUrls().getMedium())
-//                .onlyRetrieveFromCache(true)
                 .transition(withCrossFade(500))
                 .into(holder.imageView);
-//    }
-//        holder.imageView.setTag(illusts.get(position).getImageUrls().getMedium());
     }
 
     @Override
@@ -68,7 +62,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
         return illusts.size();
     }
 
-    class ImageListHolder extends RecyclerView.ViewHolder {
+    static class ImageListHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
         public ImageListHolder(@NonNull View itemView) {

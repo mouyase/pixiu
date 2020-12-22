@@ -23,6 +23,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.utils.ViewUtils;
 
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     private ActivityMainBinding viewBinding;
     private ImageListAdapter recommendAdapter;
-    private List<IllustDTO> uiRecommendList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +57,14 @@ public class MainActivity extends AppCompatActivity {
     protected void initViewModel() {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         viewModel.getCoverImageUrl().observe(this, s -> {
-//            viewBinding.coverImage.set
             Glide.with(this)
                     .load(s)
-//                    .onlyRetrieveFromCache(true)
                     .transition(withCrossFade(500))
                     .into(viewBinding.coverImage);
         });
-        recommendAdapter = new ImageListAdapter(uiRecommendList);
+        recommendAdapter = new ImageListAdapter(viewModel.getRecommendList().getValue());
         viewModel.getRecommendList().observe(this, illusts -> {
-            uiRecommendList.clear();
-            uiRecommendList.addAll(illusts);
-            recommendAdapter.notifyDataSetChanged();
+            recommendAdapter.notifyItemInserted(illusts.size());
         });
     }
 
@@ -122,10 +119,25 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL);
             staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-            //设置recyclerView的布局
             recyclerView.setLayoutManager(staggeredGridLayoutManager);
+            RefreshLayout refreshLayout = view.findViewById(R.id.refreshlayout);
             if (position == 0) {
                 recyclerView.setAdapter(recommendAdapter);
+                refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+                    @Override
+                    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                        viewModel.getRecommendData();
+                    }
+
+                    @Override
+                    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                        viewModel.refreshRecommendData();
+                    }
+                });
+                viewModel.getRecommendList().observe(MainActivity.this, illusts -> {
+                    refreshLayout.finishLoadMore(true);
+                    refreshLayout.finishRefresh(true);
+                });
             }
             return view;
         }
