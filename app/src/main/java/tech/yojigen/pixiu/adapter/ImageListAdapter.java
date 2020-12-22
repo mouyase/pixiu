@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,9 +25,11 @@ import java.util.List;
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.dto.IllustDTO;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ImageListHolder> {
     List<IllustDTO> illusts;
-//    int imageWidth;
+    int imageWidth;
 
     public ImageListAdapter(List<IllustDTO> illusts) {
         this.illusts = illusts;
@@ -36,33 +39,28 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
     @Override
     public ImageListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagelist, parent, false);
-//        imageWidth = parent.getWidth() / 3;
+        imageWidth = parent.getWidth() / 3;
         return new ImageListHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull ImageListHolder holder, int position) {
-        String imageTag = (String) holder.imageView.getTag();
-        if (TextUtils.isEmpty(imageTag) || imageTag.endsWith(illusts.get(position).getImageUrls().getMedium())) {
-            Glide.with(holder.itemView)
-                    .load(illusts.get(position).getImageUrls().getMedium())
-                    .dontAnimate()
+        int height = (int) (((float) illusts.get(position).getHeight() / (float) illusts.get(position).getWidth()) * imageWidth);
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        layoutParams.height = height;
+        layoutParams.width = imageWidth;
+        holder.itemView.setLayoutParams(layoutParams);
+        System.out.println(illusts.get(position).getTitle() + "| " + imageWidth + " " + "| " + height + " ");
+        System.out.println(illusts.get(position).getImageUrls().getMedium().replace("pximg.net", "pixiv.cat"));
+//        if (TextUtils.isEmpty(imageTag) || imageTag.endsWith(illusts.get(position).getImageUrls().getMedium())) {
+        Glide.with(holder.itemView.getContext())
+                .load(illusts.get(position).getImageUrls().getMedium())
 //                .onlyRetrieveFromCache(true)
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            holder.imageView.setImageDrawable(resource);
-//                            ViewUtils.fadeIn(holder.imageView, 500, null);
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                        }
-                    });
-        }
-        holder.imageView.setTag(illusts.get(position).getImageUrls().getMedium());
+                .transition(withCrossFade(500))
+                .into(holder.imageView);
+//    }
+//        holder.imageView.setTag(illusts.get(position).getImageUrls().getMedium());
     }
 
     @Override
@@ -76,9 +74,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
         public ImageListHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image);
-//            ViewGroup.LayoutParams layoutParam = imageView.getLayoutParams();
-//            layoutParam.width = imageWidth;
-//            imageView.setLayoutParams(layoutParam);
         }
     }
 }

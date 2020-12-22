@@ -35,6 +35,8 @@ import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     private ActivityMainBinding viewBinding;
@@ -58,18 +60,8 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(s)
 //                    .onlyRetrieveFromCache(true)
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            viewBinding.coverImage.setImageDrawable(resource);
-//                            ViewUtils.fadeIn(viewBinding.coverImage, 500, null);
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                        }
-                    });
+                    .transition(withCrossFade(500))
+                    .into(viewBinding.coverImage);
         });
         recommendAdapter = new ImageListAdapter(uiRecommendList);
         viewModel.getRecommendList().observe(this, illusts -> {
@@ -127,12 +119,14 @@ public class MainActivity extends AppCompatActivity {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             container.addView(view, params);
             RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-//            recyclerView.setHasFixedSize(false);
+            recyclerView.setHasFixedSize(true);
             StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL);
-//            staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
             //设置recyclerView的布局
             recyclerView.setLayoutManager(staggeredGridLayoutManager);
-            recyclerView.setAdapter(recommendAdapter);
+            if (position == 0) {
+                recyclerView.setAdapter(recommendAdapter);
+            }
             return view;
         }
     };

@@ -20,10 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.MainActivity" />
-
-        <meta-data
-            android:name=".app.CustomGlideModule"
-            android:value="AppGlideModule" />
     </application>
 
 </manifest>
