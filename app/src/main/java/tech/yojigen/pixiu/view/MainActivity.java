@@ -43,11 +43,13 @@ import java.util.List;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
+import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.listener.ImageListListener;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
 import tech.yojigen.util.YShare;
+import tech.yojigen.util.YToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -192,6 +194,20 @@ public class MainActivity extends AppCompatActivity {
 //                .fromTreeUri(this, Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AD"))
 //                .createDirectory("child")
 //                .createFile("text/plain", "text.txt");
+//        viewBinding.toolbar.setNavigationOnClickListener(onClickListener);
+        viewBinding.toolbar.inflateMenu(R.menu.menu_main);
+        viewBinding.toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_search:
+                    Intent intent = new Intent(this, SearchResultActivity.class);
+                    intent.putExtra(Value.BUNDLE_KEY_SEARCH, "HoloLive");
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        });
     }
 //
 //    @Override

@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pixiu">
-        <activity android:name=".view.LoginActivity"></activity>
+        <activity android:name=".view.SearchResultActivity"></activity>
+        <activity android:name=".view.SearchActivity" />
+        <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.RouterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.MainActivity" />
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -32,7 +33,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>
