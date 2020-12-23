@@ -8,6 +8,7 @@ public class Value {
     public static final String SETTING_USERNAME = "username";
     public static final String SETTING_PASSWORD = "password";
     public static final String SETTING_ACCOUNT = "SETTING_ACCOUNT";
+    public static final String SETTING_NETWORK_MODE = "SETTING_NETWORK_MODE";
 
 
     public static final String PIXIV_APP_VERSION = "5.0.250";
@@ -21,6 +22,15 @@ public class Value {
     public static final String PIXIV_CLIENT_ID = "MOBrBDS8blbauoSck0ZfDbtuzpyT";
     public static final String PIXIV_CLIENT_SECRET = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj";
 
-    public static final String URL_OAUTH = "https://oauth.secure.128512.xyz/auth/token";
-    public static final String URL_API = "https://app-api.128512.xyz";
+    public static final String MODE_PROXY_URL_OAUTH = "https://oauth.secure.128512.xyz/auth/token";
+    public static final String MODE_PROXY_URL_API = "https://app-api.128512.xyz";
+    public static final String MODE_PROXY_URL_ACCOUNT = "https://accounts.128512.xyz";
+
+    public static final String MODE_NORMAL_URL_OAUTH = "https://oauth.secure.pixiv.net/auth/token";
+    public static final String MODE_NORMAL_URL_API = "https://app-api.pixiv.net";
+    public static final String MODE_NORMAL_URL_ACCOUNT = "https://accounts.pixiv.net";
+
+    public static String URL_OAUTH = "https://oauth.secure.pixiv.net/auth/token";
+    public static String URL_API = "https://app-api.pixiv.net";
+    public static String URL_ACCOUNT = "https://accounts.pixiv.net";
 }

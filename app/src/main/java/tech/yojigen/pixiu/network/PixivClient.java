@@ -1,6 +1,7 @@
 package tech.yojigen.pixiu.network;
 
 
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -14,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,12 +26,23 @@ import tech.yojigen.pixiu.BuildConfig;
 import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.UserAccountDTO;
+import tech.yojigen.pixiu.network.fuckgfw.PixivDNS;
+import tech.yojigen.pixiu.network.fuckgfw.PixivSSLSocketFactory;
+import tech.yojigen.pixiu.network.fuckgfw.PixivTrustManager;
+import tech.yojigen.pixiu.view.LoginActivity;
 import tech.yojigen.util.YDigest;
 import tech.yojigen.util.YSetting;
+import tech.yojigen.util.YToast;
+import tech.yojigen.util.YUtil;
 
 public class PixivClient {
-    private static PixivClient mPixivClient = new PixivClient();
-    private Gson gson = new Gson();
+    private static final PixivClient mPixivClient = new PixivClient();
+    private final Gson gson = new Gson();
+    public static final int MODE_NORMAL = 0x00001000;
+    public static final int MODE_NO_SNI = 0x00002000;
+    public static final int MODE_PROXY = 0x00003000;
+
+    private int mode = YSetting.get(Value.SETTING_NETWORK_MODE, MODE_NO_SNI);
 
     public static PixivClient getInstance() {
         return mPixivClient;
@@ -99,7 +110,6 @@ public class PixivClient {
                         Request refreshRequest = new Request.Builder().url(Value.URL_OAUTH).post(pixivData.getForm()).build();
                         Response refreshResponse = getClient().newCall(refreshRequest).execute();
                         if (refreshResponse.isSuccessful()) {
-                            System.out.println("刷新了token");
                             UserAccountDTO userAccountDTO = gson.fromJson(refreshResponse.body().string(), UserAccountDTO.class);
                             PixiuApplication.setData(userAccountDTO);
                             String accessToken = PixiuApplication.getData().getAccessToken();
@@ -108,11 +118,32 @@ public class PixivClient {
                                     .header("Authorization", "Bearer " + accessToken)
                                     .build();
                             return chain.proceed(newRequest);
+                        } else {
+                            Intent intent = new Intent(YUtil.getInstance().getContext(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            YUtil.getInstance().getContext().startActivity(intent);
+                            YToast.show("用户过期，请重新登陆");
                         }
                     }
                 }
             }
             return response;
+        };
+        Interceptor changeModeInterceptor = chain -> {
+            Request request = chain.request();
+            String newUrl = request.url().toString();
+            if (this.mode == MODE_PROXY) {
+                if (newUrl.contains("128512.xyz")) {
+                    newUrl = newUrl.replace("128512.xyz", "pixiv.net");
+                }
+            } else {
+                if (newUrl.contains("pixiv.net")) {
+                    newUrl = newUrl.replace("pixiv.net", "128512.xyz");
+                }
+            }
+            Request newRequest = request.newBuilder().url(newUrl).build();
+            return chain.proceed(newRequest);
         };
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
@@ -120,6 +151,65 @@ public class PixivClient {
         builder.addInterceptor(addTokenInterceptor);
         builder.addInterceptor(refreshTokenInterceptor);
         builder.addInterceptor(httpLoggingInterceptor);
+        switch (this.mode) {
+            case MODE_NORMAL:
+            case MODE_PROXY:
+                builder.addInterceptor(changeModeInterceptor);
+                break;
+            case MODE_NO_SNI:
+                builder.sslSocketFactory(PixivSSLSocketFactory.getInstance(), PixivTrustManager.getInstance());
+                builder.dns(PixivDNS.getInstance());
+                break;
+        }
+        return builder.build();
+    }
+
+    public void changeMode(int mode) {
+        this.mode = mode;
+        switch (this.mode) {
+            case MODE_NORMAL:
+                Value.URL_OAUTH = Value.MODE_NORMAL_URL_OAUTH;
+                Value.URL_ACCOUNT = Value.MODE_NORMAL_URL_ACCOUNT;
+                Value.URL_API = Value.MODE_NORMAL_URL_API;
+                System.out.println("切换到 MODE_NORMAL");
+                break;
+            case MODE_NO_SNI:
+                Value.URL_OAUTH = Value.MODE_NORMAL_URL_OAUTH;
+                Value.URL_ACCOUNT = Value.MODE_NORMAL_URL_ACCOUNT;
+                Value.URL_API = Value.MODE_NORMAL_URL_API;
+                System.out.println("切换到 MODE_NO_SNI");
+                break;
+            case MODE_PROXY:
+                Value.URL_OAUTH = Value.MODE_PROXY_URL_OAUTH;
+                Value.URL_ACCOUNT = Value.MODE_PROXY_URL_ACCOUNT;
+                Value.URL_API = Value.MODE_PROXY_URL_API;
+                System.out.println("切换到 MODE_PROXY");
+                break;
+        }
+        YSetting.set(Value.SETTING_NETWORK_MODE, mode);
+    }
+
+    public OkHttpClient getGlideClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(600, TimeUnit.SECONDS);
+        builder.readTimeout(600, TimeUnit.SECONDS);
+        builder.writeTimeout(600, TimeUnit.SECONDS);
+        Interceptor headerInterceptor = chain -> {
+            String pixivTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.CHINA).format(new Date());
+            String pixivHash = String.valueOf(YDigest.MD5(pixivTime + Value.PIXIV_BASE_HASH));
+            Request request = chain.request().newBuilder()
+                    .header("User-Agent", Value.PIXIV_USER_AGENT)
+                    .header("Accept-Language", Value.PIXIV_ACCEPT_LANGUAGE)
+                    .header("App-OS", Value.PIXIV_APP_OS)
+                    .header("App-OS-Version", Value.PIXIV_APP_OS_VERSION)
+                    .header("App-Version", Value.PIXIV_APP_VERSION)
+                    .header("Referer", Value.PIXIV_REFERER)
+                    .header("X-Client-Time", pixivTime)
+                    .header("X-Client-Hash", pixivHash)
+                    .build();
+            return chain.proceed(request);
+        };
+        builder.addInterceptor(headerInterceptor);
         return builder.build();
     }
 

@@ -7,6 +7,7 @@ import com.mob.MobSDK;
 import com.xuexiang.xui.XUI;
 
 import tech.yojigen.pixiu.dto.UserAccountDTO;
+import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YUtil;
 
@@ -20,13 +21,14 @@ public class PixiuApplication extends Application {
         initData();
     }
 
-    void initApplication() {
+    private void initApplication() {
         XUI.init(this); //初始化UI框架
         XUI.debug(true);  //开启UI框架调试日志
 //        XHttpSDK.setBaseUrl(SettingSPUtils.getInstance().getApiURL());  //设置网络请求的基础地址
 
         MobSDK.init(this);//初始化MobSDK
         YUtil.getInstance().init(this);
+//        PixivClient.getInstance().changeMode(PixivClient.MODE_PROXY);
     }
 
     private void initData() {

@@ -16,6 +16,7 @@ import tech.yojigen.util.YSetting;
 public class LoginViewModel extends ViewModel {
     private final Gson gson = new Gson();
     private final SingleLiveEvent onLoginSuccess = new SingleLiveEvent<>();
+    private final SingleLiveEvent onLoginFailed = new SingleLiveEvent<>();
 
     public void login(String username, String password) {
         username = username.trim().toLowerCase();
@@ -32,7 +33,7 @@ public class LoginViewModel extends ViewModel {
         PixivClient.getInstance().post(Value.URL_OAUTH, pixivData, new PixivCallback() {
             @Override
             public void onFailure() {
-
+                onLoginFailed.postValue();
             }
 
             @Override
