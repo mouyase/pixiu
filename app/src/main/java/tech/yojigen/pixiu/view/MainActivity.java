@@ -1,26 +1,16 @@
 package tech.yojigen.pixiu.view;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,18 +18,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xuexiang.xui.utils.StatusBarUtils;
-import com.xuexiang.xui.utils.ViewUtils;
-import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
@@ -48,8 +29,6 @@ import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.listener.ImageListListener;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
-import tech.yojigen.util.YShare;
-import tech.yojigen.util.YToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -200,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_search:
                     Intent intent = new Intent(this, SearchResultActivity.class);
-                    intent.putExtra(Value.BUNDLE_KEY_SEARCH, "HoloLive");
+                    intent.putExtra(Value.BUNDLE_KEY_SEARCH, "GawrGura");
                     startActivity(intent);
                     break;
                 default:

@@ -55,6 +55,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     protected void initViewModel() {
         viewModel = new ViewModelProvider(this).get(SearchResultViewModel.class);
+        viewModel.setKey(searchKey);
     }
 
     protected void initView() {
@@ -72,7 +73,7 @@ public class SearchResultActivity extends AppCompatActivity {
         toolbarMarginParams.setMargins(0, StatusBarUtils.getStatusBarHeight(this), 0, 0);
         toolbar.setLayoutParams(toolbarMarginParams);
 
-        viewBinding.indicator.setTabTitles(new String[]{"本日", "本周", "本月", "本季", "本半年", "本年", "全部"});
+        viewBinding.indicator.setTabTitles(new String[]{"周维度", "月维度", "季维度", "半年维度", "年维度", "全部"});
         viewBinding.indicator.setViewPager(viewBinding.viewpager, mPagerAdapter);
     }
 
@@ -80,7 +81,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 7;
+            return 6;
         }
 
         @Override
@@ -106,42 +107,23 @@ public class SearchResultActivity extends AppCompatActivity {
             RefreshLayout refreshLayout = view.findViewById(R.id.refreshlayout);
             ImageListAdapter imageListAdapter;
 //            if (position == 0) {
-            imageListAdapter = new ImageListAdapter(viewModel.getIllustListList().get(0).getValue(), 3);
-//                refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-//                    @Override
-//                    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                        viewModel.getRecommendData();
-//                    }
-//
-//                    @Override
-//                    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                        viewModel.refreshRecommendData();
-//                    }
-//                });
-            viewModel.getIllustListList().get(0).observe(SearchResultActivity.this, illusts -> {
+            imageListAdapter = new ImageListAdapter(viewModel.getIllustListList().get(position).getValue(), 3);
+            refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+                @Override
+                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                    viewModel.getData(position);
+                }
+
+                @Override
+                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                    viewModel.refreshData(position);
+                }
+            });
+            viewModel.getIllustListList().get(position).observe(SearchResultActivity.this, illusts -> {
                 refreshLayout.finishLoadMore(true);
                 refreshLayout.finishRefresh(true);
                 imageListAdapter.notifyItemInserted(illusts.size());
             });
-//            } else {
-//                imageListAdapter = new ImageListAdapter(viewModel.getFollowedList().getValue(), 3);
-//                refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-//                    @Override
-//                    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                        viewModel.refreshFollowedData();
-//                    }
-//
-//                    @Override
-//                    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                        viewModel.refreshFollowedData();
-//                    }
-//                });
-//                viewModel.getFollowedList().observe(MainActivity.this, illusts -> {
-//                    refreshLayout.finishLoadMore(true);
-//                    refreshLayout.finishRefresh(true);
-//                    imageListAdapter.notifyItemInserted(illusts.size());
-//                });
-//            }
             recyclerView.setAdapter(imageListAdapter);
 //            imageListAdapter.setListListener(new ImageListListener() {
 //                @Override
@@ -157,7 +139,7 @@ public class SearchResultActivity extends AppCompatActivity {
             return view;
         }
     };
-    int WRITE_REQUEST_CODE = 0x0012;
+//    int WRITE_REQUEST_CODE = 0x0012;
 
     protected void initViewEvent() {
 //        viewBinding.toolbar.inflateMenu(R.menu.menu_main);

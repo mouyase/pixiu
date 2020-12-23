@@ -73,7 +73,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
                 .transition(withCrossFade(500))
                 .into(holder.image);
         holder.itemView.setOnClickListener(v -> {
-            this.imageListListener.onItemClick(v, illust, position);
         });
         holder.itemView.setOnLongClickListener(v -> {
             onLongClick(holder, position);
