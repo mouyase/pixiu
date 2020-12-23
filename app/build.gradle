@@ -55,6 +55,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "androidx.documentfile:documentfile:1.0.1"
+
     implementation 'com.google.code.gson:gson:2.8.6'
     //noinspection GradleDependency
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
@@ -62,7 +65,6 @@ dependencies {
 
     implementation 'com.github.xuexiangjys:XUI:1.1.5'
 
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.11.0'

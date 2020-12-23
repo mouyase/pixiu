@@ -2,6 +2,9 @@ package tech.yojigen.pixiu.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class IllustDTO {
     @SerializedName("id")
     String id;
@@ -14,7 +17,7 @@ public class IllustDTO {
     @SerializedName("create_date")
     String createTime;
     @SerializedName("page_count")
-    String pageCount;
+    int pageCount;
     @SerializedName("width")
     int width;
     @SerializedName("height")
@@ -105,11 +108,11 @@ public class IllustDTO {
         this.createTime = createTime;
     }
 
-    public String getPageCount() {
+    public int getPageCount() {
         return pageCount;
     }
 
-    public void setPageCount(String pageCount) {
+    public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
     }
 
@@ -136,4 +139,26 @@ public class IllustDTO {
     public void setUser(UserDTO user) {
         this.user = user;
     }
+
+    public boolean isSingle() {
+        if (this.pageCount > 1) {
+            return false;
+        }
+        return true;
+    }
+
+//    public List<String> getLargeList() {
+//        List<String> urlList = new ArrayList<>();
+//        if (isSingle()) {
+//
+//        } else {
+//
+//        }
+//        return urlList;
+//    }
+//
+//    public List<String> getOriginalList() {
+//        List<String> urlList = new ArrayList<>();
+//        return urlList;
+//    }
 }

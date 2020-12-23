@@ -1,10 +1,14 @@
 package tech.yojigen.pixiu.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,6 +36,8 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.utils.ViewUtils;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,47 +175,43 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onItemLongClick(View view, IllustDTO illust, int position) {
-                    new MaterialDialog.Builder(MainActivity.this)
-                            .items(new String[]{"收藏", "分享ID", "分享图片", "保存原图"})
-                            .itemsCallback((dialog, itemView, p, text) -> {
-                                switch (p) {
-                                    case 0:
-                                        break;
-                                    case 1:
-                                        break;
-                                    case 2:
-                                        MaterialDialog loginDialog = new MaterialDialog.Builder(MainActivity.this)
-                                                .content("图片加载中...")
-                                                .progress(true, 0)
-                                                .progressIndeterminateStyle(false)
-                                                .cancelable(false)
-                                                .show();
-                                        Glide.with(MainActivity.this).asBitmap()
-                                                .load(illust.getImageUrls().getLarge()).into(new CustomTarget<Bitmap>() {
-                                            @Override
-                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                                loginDialog.cancel();
-                                                YShare.image(resource);
-                                            }
 
-                                            @Override
-                                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                                                loginDialog.cancel();
-                                            }
-                                        });
-                                        break;
-                                    case 3:
-                                        break;
-                                }
-                            })
-                            .show();
                 }
             });
             return view;
         }
     };
+    int WRITE_REQUEST_CODE = 0x0012;
 
     protected void initViewEvent() {
-
+//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+//        //intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+////        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, new Uri());
+//        startActivityForResult(intent, WRITE_REQUEST_CODE);
+//        DocumentFile child = DocumentFile
+//                .fromTreeUri(this, Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AD"))
+//                .createDirectory("child")
+//                .createFile("text/plain", "text.txt");
     }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (data == null || resultCode != Activity.RESULT_OK) return;
+//        if (requestCode == WRITE_REQUEST_CODE) {
+//            DocumentFile child = DocumentFile
+//                    .fromTreeUri(this, data.getData())
+//                    .createDirectory("child")
+//                    .createFile("text/plain", "text.txt");
+//            System.out.println(data.getData());
+//            Uri uri = child.getUri();
+//            try {
+//                getContentResolver().openOutputStream(uri).write("成功".getBytes());
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }
