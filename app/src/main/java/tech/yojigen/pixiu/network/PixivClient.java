@@ -39,7 +39,7 @@ public class PixivClient {
 
     public OkHttpClient getClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(60, TimeUnit.SECONDS);
+        builder.connectTimeout(600, TimeUnit.SECONDS);
         builder.readTimeout(600, TimeUnit.SECONDS);
         builder.writeTimeout(600, TimeUnit.SECONDS);
         Interceptor headerInterceptor = chain -> {
@@ -84,29 +84,31 @@ public class PixivClient {
             Buffer buffer = bufferedSource.getBuffer();
             String bodyString = buffer.clone().readString(StandardCharsets.UTF_8);
             if (bodyString.contains("Error occurred at the OAuth process.")) {
-                System.out.println("需要刷新token");
                 synchronized (this) {
-                    PixivData pixivData = new PixivData.Builder()
-                            .set("client_id", Value.PIXIV_CLIENT_ID)
-                            .set("client_secret", Value.PIXIV_CLIENT_SECRET)
-                            .set("grant_type", "refresh_token")
-                            .set("refresh_token", PixiuApplication.getData().getRefreshToken())
-                            .set("device_token", "pixiv")
-                            .set("get_secure_url", true)
-                            .set("include_policy", false)
-                            .build();
-                    Request refreshRequest = new Request.Builder().url(Value.URL_OAUTH).post(pixivData.getForm()).build();
-                    Response refreshResponse = getClient().newCall(refreshRequest).execute();
-                    if (refreshResponse.isSuccessful()) {
-                        System.out.println("刷新了token");
-                        UserAccountDTO userAccountDTO = gson.fromJson(refreshResponse.body().string(), UserAccountDTO.class);
-                        PixiuApplication.setData(userAccountDTO);
-                        String accessToken = PixiuApplication.getData().getAccessToken();
-                        Request newRequest = request.newBuilder()
-                                .removeHeader("Authorization")
-                                .header("Authorization", "Bearer " + accessToken)
+                    String refreshToken = PixiuApplication.getData().getRefreshToken();
+                    if (!TextUtils.isEmpty(refreshToken)) {
+                        PixivData pixivData = new PixivData.Builder()
+                                .set("client_id", Value.PIXIV_CLIENT_ID)
+                                .set("client_secret", Value.PIXIV_CLIENT_SECRET)
+                                .set("grant_type", "refresh_token")
+                                .set("refresh_token", refreshToken)
+                                .set("device_token", "pixiv")
+                                .set("get_secure_url", true)
+                                .set("include_policy", false)
                                 .build();
-                        return chain.proceed(newRequest);
+                        Request refreshRequest = new Request.Builder().url(Value.URL_OAUTH).post(pixivData.getForm()).build();
+                        Response refreshResponse = getClient().newCall(refreshRequest).execute();
+                        if (refreshResponse.isSuccessful()) {
+                            System.out.println("刷新了token");
+                            UserAccountDTO userAccountDTO = gson.fromJson(refreshResponse.body().string(), UserAccountDTO.class);
+                            PixiuApplication.setData(userAccountDTO);
+                            String accessToken = PixiuApplication.getData().getAccessToken();
+                            Request newRequest = request.newBuilder()
+                                    .removeHeader("Authorization")
+                                    .header("Authorization", "Bearer " + accessToken)
+                                    .build();
+                            return chain.proceed(newRequest);
+                        }
                     }
                 }
             }
@@ -135,11 +137,15 @@ public class PixivClient {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                BufferedSource bufferedSource = response.body().source();
-                bufferedSource.request(Long.MAX_VALUE);
-                Buffer buffer = bufferedSource.getBuffer();
-                String bodyString = buffer.clone().readString(StandardCharsets.UTF_8);
-                pixivCallback.onResponse(bodyString);
+                if (response.isSuccessful()) {
+                    BufferedSource bufferedSource = response.body().source();
+                    bufferedSource.request(Long.MAX_VALUE);
+                    Buffer buffer = bufferedSource.getBuffer();
+                    String bodyString = buffer.clone().readString(StandardCharsets.UTF_8);
+                    pixivCallback.onResponse(bodyString);
+                } else {
+                    pixivCallback.onFailure();
+                }
             }
         });
     }
@@ -160,11 +166,15 @@ public class PixivClient {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                BufferedSource bufferedSource = response.body().source();
-                bufferedSource.request(Long.MAX_VALUE);
-                Buffer buffer = bufferedSource.getBuffer();
-                String bodyString = buffer.clone().readString(StandardCharsets.UTF_8);
-                pixivCallback.onResponse(bodyString);
+                if (response.isSuccessful()) {
+                    BufferedSource bufferedSource = response.body().source();
+                    bufferedSource.request(Long.MAX_VALUE);
+                    Buffer buffer = bufferedSource.getBuffer();
+                    String bodyString = buffer.clone().readString(StandardCharsets.UTF_8);
+                    pixivCallback.onResponse(bodyString);
+                } else {
+                    pixivCallback.onFailure();
+                }
             }
         });
     }

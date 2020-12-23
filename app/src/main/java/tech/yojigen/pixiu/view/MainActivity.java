@@ -1,6 +1,8 @@
 package tech.yojigen.pixiu.view;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.utils.ViewUtils;
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +38,15 @@ import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
+import tech.yojigen.pixiu.listener.ImageListListener;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
+import tech.yojigen.util.YShare;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     private ActivityMainBinding viewBinding;
-    private ImageListAdapter recommendAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     .load(s)
                     .transition(withCrossFade(500))
                     .into(viewBinding.coverImage);
-        });
-        recommendAdapter = new ImageListAdapter(viewModel.getRecommendList().getValue());
-        viewModel.getRecommendList().observe(this, illusts -> {
-            recommendAdapter.notifyItemInserted(illusts.size());
         });
     }
 
@@ -121,8 +121,9 @@ public class MainActivity extends AppCompatActivity {
             staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
             recyclerView.setLayoutManager(staggeredGridLayoutManager);
             RefreshLayout refreshLayout = view.findViewById(R.id.refreshlayout);
+            ImageListAdapter imageListAdapter;
             if (position == 0) {
-                recyclerView.setAdapter(recommendAdapter);
+                imageListAdapter = new ImageListAdapter(viewModel.getRecommendList().getValue(), 3);
                 refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
                     @Override
                     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -137,13 +138,77 @@ public class MainActivity extends AppCompatActivity {
                 viewModel.getRecommendList().observe(MainActivity.this, illusts -> {
                     refreshLayout.finishLoadMore(true);
                     refreshLayout.finishRefresh(true);
+                    imageListAdapter.notifyItemInserted(illusts.size());
+                });
+            } else {
+                imageListAdapter = new ImageListAdapter(viewModel.getFollowedList().getValue(), 3);
+                refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+                    @Override
+                    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                        viewModel.refreshFollowedData();
+                    }
+
+                    @Override
+                    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                        viewModel.refreshFollowedData();
+                    }
+                });
+                viewModel.getFollowedList().observe(MainActivity.this, illusts -> {
+                    refreshLayout.finishLoadMore(true);
+                    refreshLayout.finishRefresh(true);
+                    imageListAdapter.notifyItemInserted(illusts.size());
                 });
             }
+            recyclerView.setAdapter(imageListAdapter);
+            imageListAdapter.setListListener(new ImageListListener() {
+                @Override
+                public void onItemClick(View view, IllustDTO illust, int position) {
+
+                }
+
+                @Override
+                public void onItemLongClick(View view, IllustDTO illust, int position) {
+                    new MaterialDialog.Builder(MainActivity.this)
+                            .items(new String[]{"收藏", "分享ID", "分享图片", "保存原图"})
+                            .itemsCallback((dialog, itemView, p, text) -> {
+                                switch (p) {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        break;
+                                    case 2:
+                                        MaterialDialog loginDialog = new MaterialDialog.Builder(MainActivity.this)
+                                                .content("图片加载中...")
+                                                .progress(true, 0)
+                                                .progressIndeterminateStyle(false)
+                                                .cancelable(false)
+                                                .show();
+                                        Glide.with(MainActivity.this).asBitmap()
+                                                .load(illust.getImageUrls().getLarge()).into(new CustomTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                loginDialog.cancel();
+                                                YShare.image(resource);
+                                            }
+
+                                            @Override
+                                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                loginDialog.cancel();
+                                            }
+                                        });
+                                        break;
+                                    case 3:
+                                        break;
+                                }
+                            })
+                            .show();
+                }
+            });
             return view;
         }
     };
 
     protected void initViewEvent() {
-        viewModel.getRecommendData();
+
     }
 }

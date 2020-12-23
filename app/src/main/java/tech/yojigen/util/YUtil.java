@@ -17,4 +17,8 @@ public class YUtil {
     public Context getContext() {
         return mContext;
     }
+
+    public String getPackageName() {
+        return mContext.getPackageName();
+    }
 }

@@ -16,6 +16,7 @@ import java.util.Set;
 
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.IllustDTO;
+import tech.yojigen.pixiu.dto.IllustListDTO;
 import tech.yojigen.pixiu.dto.RecommendDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
@@ -27,16 +28,19 @@ public class MainViewModel extends ViewModel {
     private Set recommendSet = new HashSet<>();
     private String recommendNextUrl;
     private MutableLiveData<List<IllustDTO>> followedList = new MutableLiveData();
-    private Map followedMap = new HashMap<>();
+    private Set followedSet = new HashSet<>();
     private String followedNextUrl;
 
     private MutableLiveData<String> coverImageUrl = new MutableLiveData();
 
-    Boolean isRecommendLoading = false;
+    private Boolean isRecommendLoading = false;
+    private Boolean isFollowedLoading = false;
 
     public MainViewModel() {
         recommendList.setValue(new ArrayList());
         followedList.setValue(new ArrayList());
+        refreshRecommendData();
+        refreshFollowedData();
     }
 
 
@@ -85,11 +89,57 @@ public class MainViewModel extends ViewModel {
         getRecommendData();
     }
 
-    public MutableLiveData<String> getCoverImageUrl() {
-        return coverImageUrl;
-    }
-
     public MutableLiveData<List<IllustDTO>> getRecommendList() {
         return recommendList;
+    }
+
+
+    public void getFollowedData() {
+        if (!isFollowedLoading) {
+            isFollowedLoading = true;
+            String url = TextUtils.isEmpty(followedNextUrl) ? Value.URL_API + "/v2/illust/follow" : followedNextUrl;
+            PixivData pixivData = TextUtils.isEmpty(followedNextUrl) ? new PixivData.Builder()
+                    .set("restrict", "all")
+                    .set("content_type", "illust")
+                    .build() : null;
+            PixivClient.getInstance().get(url, pixivData, new PixivCallback() {
+                @Override
+                public void onFailure() {
+                    isFollowedLoading = false;
+                }
+
+                @Override
+                public void onResponse(String body) {
+                    IllustListDTO illustListDTO = gson.fromJson(body, IllustListDTO.class);
+                    List<IllustDTO> newList = new ArrayList<>();
+                    for (IllustDTO illustDTO : illustListDTO.getIllustList()) {
+                        if (followedSet.contains(illustDTO.getId())) {
+                            continue;
+                        } else {
+                            followedSet.add(illustDTO.getId());
+                            newList.add(illustDTO);
+                        }
+                    }
+                    followedNextUrl = illustListDTO.getNextUrl();
+                    followedList.getValue().addAll(newList);
+                    followedList.postValue(followedList.getValue());
+                    isFollowedLoading = false;
+                }
+            });
+        }
+    }
+
+    public void refreshFollowedData() {
+        followedNextUrl = null;
+        followedSet = new HashSet();
+        getFollowedData();
+    }
+
+    public MutableLiveData<List<IllustDTO>> getFollowedList() {
+        return followedList;
+    }
+
+    public MutableLiveData<String> getCoverImageUrl() {
+        return coverImageUrl;
     }
 }
