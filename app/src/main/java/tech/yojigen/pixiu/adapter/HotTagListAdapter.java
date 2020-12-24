@@ -18,7 +18,6 @@ import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.TagDTO;
-import tech.yojigen.pixiu.view.SearchActivity;
 import tech.yojigen.pixiu.view.SearchResultActivity;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -89,7 +88,7 @@ public class HotTagListAdapter extends RecyclerView.Adapter<HotTagListAdapter.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            name = itemView.findViewById(R.id.name);
+            name = itemView.findViewById(R.id.username);
             translatedName = itemView.findViewById(R.id.translatedName);
         }
     }

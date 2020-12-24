@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +24,7 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
-import tech.yojigen.pixiu.app.Value;
+import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.listener.ImageListListener;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(s)
                     .transition(withCrossFade(500))
-                    .into(viewBinding.coverImage);
+                    .into(viewBinding.cover);
         });
     }
 
@@ -71,14 +71,17 @@ public class MainActivity extends AppCompatActivity {
         toolbarMarginParams.setMargins(0, StatusBarUtils.getStatusBarHeight(this), 0, 0);
         toolbar.setLayoutParams(toolbarMarginParams);
 
-        DrawerLayout drawerLayout = viewBinding.drawerlayout;
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, viewBinding.drawerlayout, toolbar, R.string.app_name, R.string.app_name);
+        viewBinding.drawerlayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
 
         viewBinding.indicator.setTabTitles(new String[]{"推荐", "关注"});
         viewBinding.indicator.setViewPager(viewBinding.viewpager, mPagerAdapter);
+
+        TextView username = viewBinding.navigation.getHeaderView(0).findViewById(R.id.username);
+        username.setText(PixiuApplication.getData().getUser().getName());
+        username.setTextSize(18);
     }
 
     private final PagerAdapter mPagerAdapter = new PagerAdapter() {

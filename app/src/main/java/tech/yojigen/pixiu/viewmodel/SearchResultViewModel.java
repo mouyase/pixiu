@@ -134,6 +134,9 @@ public class SearchResultViewModel extends ViewModel {
                     illustListList.get(index).postValue(illustListList.get(index).getValue());
                     isLoadingList.set(index, false);
                     nextTimesList.set(index, nextTimesList.get(index) + 1);
+                    if (illustListList.get(index).getValue().size() < 30) {
+                        getData(index);
+                    }
                 }
             });
         }

@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/cover_image"
+                        android:id="@+id/cover"
                         android:layout_width="match_parent"
                         android:layout_height="222dp"
                         android:scaleType="centerCrop"
@@ -103,6 +103,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
