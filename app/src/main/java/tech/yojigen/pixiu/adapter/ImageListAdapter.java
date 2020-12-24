@@ -19,7 +19,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.dto.IllustDTO;
@@ -28,7 +27,7 @@ import tech.yojigen.util.YShare;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ImageListHolder> {
+public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder> {
     private List<IllustDTO> illusts;
     private int imageWidth;
     private int column;
@@ -47,15 +46,15 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
 
     @NonNull
     @Override
-    public ImageListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagelist, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image_list, parent, false);
         imageWidth = parent.getWidth() / column;
-        return new ImageListHolder(view);
+        return new ViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull ImageListHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IllustDTO illust = illusts.get(position);
         if (illust.isSingle()) {
             holder.count.setVisibility(View.GONE);
@@ -80,7 +79,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
         });
     }
 
-    private void onLongClick(@NonNull ImageListHolder holder, int position) {
+    private void onLongClick(@NonNull ViewHolder holder, int position) {
         IllustDTO illust = illusts.get(position);
         new MaterialDialog.Builder(holder.itemView.getContext())
                 .items(new String[]{"收藏", "分享ID", "分享图片", "保存原图"})
@@ -133,11 +132,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
         return illusts.size();
     }
 
-    static class ImageListHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView count;
 
-        public ImageListHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             count = itemView.findViewById(R.id.count);

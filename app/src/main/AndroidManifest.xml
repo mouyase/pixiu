@@ -12,17 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pixiu">
-        <activity android:name=".view.SearchResultActivity"></activity>
-        <activity android:name=".view.SearchActivity" />
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.RouterActivity">
+        <activity android:name=".view.SearchResultActivity" />
+        <activity
+            android:name=".view.SearchActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.RouterActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity" />
+        <activity
+            android:name=".view.MainActivity"
+            android:launchMode="singleTask" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

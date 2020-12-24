@@ -38,7 +38,7 @@
             app:met_clearButton="true"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelTextSize="14sp"
-            app:met_textColorHint="#666666" />
+            app:met_textColorHint="#66000000" />
 
         <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
             android:id="@+id/et_password"
@@ -52,7 +52,7 @@
             app:met_floatingLabel="highlight"
             app:met_floatingLabelTextSize="14sp"
             app:met_passWordButton="true"
-            app:met_textColorHint="#666666" />
+            app:met_textColorHint="#66000000" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -42,7 +42,7 @@ public class SearchResultViewModel extends ViewModel {
             illustListList.add(i, mutableLiveData);
             nextTimesList.add(i, 0);
             isLoadingList.add(i, false);
-            getData(i);
+            refreshData(i);
         }
     }
 
@@ -117,7 +117,7 @@ public class SearchResultViewModel extends ViewModel {
                     .set("include_translated_tag_results", true)
                     .set("merge_plain_keyword_results", true)
                     .set("word", searchKey)
-                    .set("search_target", "exact_match_for_tags")
+                    .set("search_target", "partial_match_for_tags")
                     .set("start_date", startData)
                     .set("end_date", endData)
                     .build();
@@ -143,6 +143,8 @@ public class SearchResultViewModel extends ViewModel {
         illustListList.get(index).getValue().clear();
         nextTimesList.set(index, 0);
         isLoadingList.set(index, false);
+        illustListList.get(index).getValue().clear();
+        illustListList.get(index).postValue(illustListList.get(index).getValue());
         getData(index);
     }
 

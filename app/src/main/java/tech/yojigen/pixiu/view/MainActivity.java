@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                        viewModel.getRecommendList().getValue().clear();
+                        imageListAdapter.notifyDataSetChanged();
                         viewModel.refreshRecommendData();
                     }
                 });
@@ -133,11 +135,13 @@ public class MainActivity extends AppCompatActivity {
                 refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
                     @Override
                     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                        viewModel.refreshFollowedData();
+                        viewModel.getFollowedData();
                     }
 
                     @Override
                     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                        viewModel.getFollowedList().getValue().clear();
+                        imageListAdapter.notifyDataSetChanged();
                         viewModel.refreshFollowedData();
                     }
                 });
@@ -178,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
         viewBinding.toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_search:
-                    Intent intent = new Intent(this, SearchResultActivity.class);
-                    intent.putExtra(Value.BUNDLE_KEY_SEARCH, "GawrGura");
+                    Intent intent = new Intent(this, SearchActivity.class);
                     startActivity(intent);
                     break;
                 default:
