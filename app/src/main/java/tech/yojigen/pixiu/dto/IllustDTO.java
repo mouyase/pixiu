@@ -26,6 +26,8 @@ public class IllustDTO {
     UserDTO user;
     @SerializedName("image_urls")
     ImageUrls imageUrls;
+    @SerializedName("is_bookmarked")
+    boolean isBookmarked;
 
     public class ImageUrls {
         @SerializedName("square_medium")
@@ -140,6 +142,11 @@ public class IllustDTO {
         this.user = user;
     }
 
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+
     public boolean isSingle() {
         if (this.pageCount > 1) {
             return false;
@@ -147,6 +154,10 @@ public class IllustDTO {
         return true;
     }
 
+
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
+    }
 //    public List<String> getLargeList() {
 //        List<String> urlList = new ArrayList<>();
 //        if (isSingle()) {

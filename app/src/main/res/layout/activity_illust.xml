@@ -4,38 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#99000000"
-    android:orientation="vertical"
-    tools:context=".view.SearchActivity">
-
+    android:background="@android:color/black"
+    tools:context=".view.IllustActivity">
 
     <com.xuexiang.xui.widget.actionbar.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tb_centerGravity="left"
-        app:tb_titleText="关键词/作品ID/用户ID" />
+        app:tb_useThemeColor="false" />
 
-    <com.xuexiang.xui.widget.searchview.MaterialSearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:hint="关键词/作品ID/用户ID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

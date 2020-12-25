@@ -160,11 +160,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemClick(View view, IllustDTO illust, int position) {
 
                 }
-
-                @Override
-                public void onItemLongClick(View view, IllustDTO illust, int position) {
-
-                }
             });
             return view;
         }
