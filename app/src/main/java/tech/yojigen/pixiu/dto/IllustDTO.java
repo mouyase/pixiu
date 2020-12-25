@@ -7,35 +7,35 @@ import java.util.List;
 
 public class IllustDTO {
     @SerializedName("id")
-    String id;
+    private String id;
     @SerializedName("title")
-    String title;
+    private String title;
     @SerializedName("type")
-    String type;
+    private String type;
     @SerializedName("caption")
-    String caption;
+    private String caption;
     @SerializedName("create_date")
-    String createTime;
+    private String createTime;
     @SerializedName("page_count")
-    int pageCount;
+    private int pageCount;
     @SerializedName("width")
-    int width;
+    private int width;
     @SerializedName("height")
-    int height;
+    private int height;
     @SerializedName("user")
-    UserDTO user;
+    private UserDTO user;
     @SerializedName("image_urls")
-    ImageUrls imageUrls;
+    private ImageUrls imageUrls;
     @SerializedName("is_bookmarked")
-    boolean isBookmarked;
+    private boolean isBookmarked;
 
     public class ImageUrls {
         @SerializedName("square_medium")
-        String square;
+        private String square;
         @SerializedName("medium")
-        String medium;
+        private String medium;
         @SerializedName("large")
-        String large;
+        private String large;
 
         public String getSquare() {
             return square;

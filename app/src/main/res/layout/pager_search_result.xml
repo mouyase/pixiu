@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     app:srlEnableAutoLoadMore="true"
     app:srlEnableLoadMore="true"
+    app:srlEnableOverScrollBounce="false"
+    app:srlEnableOverScrollDrag="false"
     app:srlEnableRefresh="true">
 
     <com.scwang.smart.refresh.header.MaterialHeader

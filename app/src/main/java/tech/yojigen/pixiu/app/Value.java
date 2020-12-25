@@ -11,6 +11,7 @@ public class Value {
     public static final String SETTING_NETWORK_MODE = "SETTING_NETWORK_MODE";
 
     public static final String BUNDLE_KEY_SEARCH = "BUNDLE_KEY_SEARCH";
+    public static final String BUNDLE_ILLUST_LIST = "BUNDLE_ILLUST_LIST";
 
     public static final String PIXIV_APP_VERSION = "5.0.250";
     public static final String PIXIV_ACCEPT_LANGUAGE = "zh_CN";

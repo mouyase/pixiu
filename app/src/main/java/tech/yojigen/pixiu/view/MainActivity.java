@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
 import tech.yojigen.pixiu.app.PixiuApplication;
+import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.listener.ImageListListener;
@@ -155,11 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
             recyclerView.setAdapter(imageListAdapter);
-            imageListAdapter.setListListener(new ImageListListener() {
-                @Override
-                public void onItemClick(View view, IllustDTO illust, int position) {
-
-                }
+            imageListAdapter.setListListener((v, illust, p) -> {
+                Intent intent = new Intent(MainActivity.this, IllustActivity.class);
+                System.out.println(p + "之前");
+                intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getRecommendBundle(p));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, v, MainActivity.this.getString(R.string.transition_illust));
+                ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
             });
             return view;
         }

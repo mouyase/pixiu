@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import tech.yojigen.pixiu.app.Value;
+import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.IllustListDTO;
 import tech.yojigen.pixiu.dto.RecommendDTO;
@@ -93,6 +94,21 @@ public class MainViewModel extends ViewModel {
         return recommendList;
     }
 
+    public String getRecommendBundle(int position) {
+        BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
+        bundleIllustDTO.setNextUrl(recommendNextUrl);
+        bundleIllustDTO.setIllustList(getRecommendList().getValue());
+        bundleIllustDTO.setPosition(position);
+        return bundleIllustDTO.toJson();
+    }
+
+    public String getFollowBundle(int position) {
+        BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
+        bundleIllustDTO.setNextUrl(followedNextUrl);
+        bundleIllustDTO.setIllustList(getFollowedList().getValue());
+        bundleIllustDTO.setPosition(position);
+        return bundleIllustDTO.toJson();
+    }
 
     public void getFollowedData() {
         if (!isFollowedLoading) {

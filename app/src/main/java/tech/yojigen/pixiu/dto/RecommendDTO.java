@@ -6,7 +6,7 @@ import java.util.List;
 
 public class RecommendDTO extends IllustListDTO {
     @SerializedName("ranking_illusts")
-    List<IllustDTO> rankingIllustList;
+    private List<IllustDTO> rankingIllustList;
 
     public List<IllustDTO> getRankingIllustList() {
         return rankingIllustList;

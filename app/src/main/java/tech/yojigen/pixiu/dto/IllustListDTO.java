@@ -6,9 +6,9 @@ import java.util.List;
 
 public class IllustListDTO {
     @SerializedName("illusts")
-    List<IllustDTO> illustList;
+    private List<IllustDTO> illustList;
     @SerializedName("next_url")
-    String nextUrl;
+    private String nextUrl;
 
     public List<IllustDTO> getIllustList() {
         return illustList;

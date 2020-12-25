@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class TagDTO {
     @SerializedName("tag")
-    String name;
+    private String name;
     @SerializedName("translated_name")
-    String translatedName;
+    private String translatedName;
     @SerializedName("illust")
-    IllustDTO illust;
+    private IllustDTO illust;
 
     public boolean isNoTranslate() {
         return this.translatedName == null;
