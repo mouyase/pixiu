@@ -8,10 +8,8 @@ import androidx.lifecycle.ViewModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import tech.yojigen.pixiu.app.Value;

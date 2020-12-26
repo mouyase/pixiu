@@ -1,14 +1,5 @@
 package tech.yojigen.pixiu.view;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +7,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.xuexiang.xui.utils.StatusBarUtils;
-import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xui.widget.imageview.preview.view.SmoothImageView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import tech.yojigen.pixiu.R;
-import tech.yojigen.pixiu.adapter.HotTagListAdapter;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityIllustBinding;
-import tech.yojigen.pixiu.databinding.ActivitySearchBinding;
 import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.viewmodel.IllustViewModel;
-import tech.yojigen.pixiu.viewmodel.SearchViewModel;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 

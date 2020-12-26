@@ -1,7 +1,6 @@
 package tech.yojigen.pixiu.viewmodel;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,14 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.IllustListDTO;
-import tech.yojigen.pixiu.dto.RecommendDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;

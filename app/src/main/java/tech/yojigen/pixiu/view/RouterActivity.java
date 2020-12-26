@@ -1,22 +1,19 @@
 package tech.yojigen.pixiu.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.xuexiang.xui.utils.StatusBarUtils;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.PixiuApplication;
-import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.UserAccountDTO;
-import tech.yojigen.pixiu.viewmodel.MainViewModel;
 import tech.yojigen.pixiu.viewmodel.RouterViewModel;
-import tech.yojigen.util.YSetting;
 
 public class RouterActivity extends AppCompatActivity {
     RouterViewModel viewModel;

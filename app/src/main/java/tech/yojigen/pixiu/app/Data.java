@@ -1,7 +1,5 @@
 package tech.yojigen.pixiu.app;
 
-import com.google.gson.annotations.SerializedName;
-
 import tech.yojigen.pixiu.dto.UserAccountDTO;
 import tech.yojigen.pixiu.dto.UserDTO;
 

@@ -2,8 +2,6 @@ package tech.yojigen.pixiu.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
 public class UserAccountDTO {
     @SerializedName("access_token")
     private String accessToken;

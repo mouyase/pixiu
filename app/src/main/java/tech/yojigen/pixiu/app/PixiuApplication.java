@@ -1,13 +1,11 @@
 package tech.yojigen.pixiu.app;
 
 import android.app.Application;
-import android.graphics.YuvImage;
 
 import com.mob.MobSDK;
 import com.xuexiang.xui.XUI;
 
 import tech.yojigen.pixiu.dto.UserAccountDTO;
-import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YUtil;
 

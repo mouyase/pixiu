@@ -3,8 +3,6 @@ package tech.yojigen.pixiu.adapter;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -27,7 +25,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import tech.yojigen.pixiu.R;
@@ -37,7 +34,6 @@ import tech.yojigen.pixiu.listener.ImageListListener;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
-import tech.yojigen.pixiu.view.IllustActivity;
 import tech.yojigen.util.YShare;
 import tech.yojigen.util.YToast;
 
@@ -180,8 +176,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                                 .progressIndeterminateStyle(false)
                                 .show();
                         loginDialog.setOnCancelListener(d -> isSharing = false);
-                        Glide.with(holder.itemView.getContext()).asBitmap()
-                                .load(illust.getImageUrls().getLarge()).into(new CustomTarget<Bitmap>() {
+                        Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getImageUrls().getLarge()).into(new CustomTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                 loginDialog.cancel();

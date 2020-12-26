@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="Theme.Pixiu" parent="XUITheme.Phone">
         <item name="android:windowContentTransitions">true</item>

@@ -1,45 +1,30 @@
 package tech.yojigen.pixiu.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.viewpager.widget.PagerAdapter;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
-import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.searchview.MaterialSearchView;
-
-import java.util.ArrayList;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
 import tech.yojigen.pixiu.app.Value;
-import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.databinding.ActivitySearchResultBinding;
-import tech.yojigen.pixiu.dto.IllustDTO;
-import tech.yojigen.pixiu.listener.ImageListListener;
-import tech.yojigen.pixiu.viewmodel.MainViewModel;
 import tech.yojigen.pixiu.viewmodel.SearchResultViewModel;
-import tech.yojigen.util.YToast;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class SearchResultActivity extends AppCompatActivity {
     private SearchResultViewModel viewModel;

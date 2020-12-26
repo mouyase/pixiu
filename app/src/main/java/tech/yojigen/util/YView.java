@@ -1,12 +1,6 @@
 package tech.yojigen.util;
 
 import android.app.Activity;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.appcompat.widget.Toolbar;
-
-import tech.yojigen.pixiu.R;
 
 public class YView {
     public static int getStatusBarHeight(Activity activity) {

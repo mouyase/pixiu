@@ -1,37 +1,22 @@
 package tech.yojigen.pixiu.view;
 
-import androidx.annotation.NonNull;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.searchview.MaterialSearchView;
-
-import java.util.List;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.HotTagListAdapter;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivitySearchBinding;
-import tech.yojigen.pixiu.dto.IllustDTO;
-import tech.yojigen.pixiu.dto.TagDTO;
 import tech.yojigen.pixiu.viewmodel.SearchViewModel;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class SearchActivity extends AppCompatActivity {
     private SearchViewModel viewModel;

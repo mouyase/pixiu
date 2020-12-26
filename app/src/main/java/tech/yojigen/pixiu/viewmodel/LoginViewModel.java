@@ -11,7 +11,6 @@ import tech.yojigen.pixiu.dto.UserAccountDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
-import tech.yojigen.util.YSetting;
 
 public class LoginViewModel extends ViewModel {
     private final Gson gson = new Gson();
