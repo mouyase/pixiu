@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +42,9 @@ public class IllustActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewBinding = ActivityIllustBinding.inflate(getLayoutInflater());
+
+
+        postponeEnterTransition();
         setContentView(viewBinding.getRoot());
 
         bundleIllustDTO = BundleIllustDTO.fromJson(getIntent().getStringExtra(Value.BUNDLE_ILLUST_LIST));
@@ -124,7 +128,11 @@ public class IllustActivity extends AppCompatActivity {
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(illust.getPageCount() + "P");
             }
-
+            holder.itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
+                ViewCompat.setTransitionName(holder.image, illust.getId());
+                startPostponedEnterTransition();
+                return true;
+            });
             Glide.with(holder.itemView.getContext())
                     .load(illust.getImageUrls().getMedium())
                     .transition(withCrossFade(500))

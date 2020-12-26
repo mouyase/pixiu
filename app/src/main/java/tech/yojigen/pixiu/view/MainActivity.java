@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             imageListAdapter.setListListener((v, illust, p) -> {
                 Intent intent = new Intent(MainActivity.this, IllustActivity.class);
                 intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getRecommendBundle(p));
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, v, MainActivity.this.getString(R.string.transition_illust));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, v, illust.getId());
                 ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
             });
             return view;
