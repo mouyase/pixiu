@@ -74,7 +74,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_collapseMode="pin"
-                    app:navigationIcon="@drawable/ic_navigation"
                     app:title="@string/app_name" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>

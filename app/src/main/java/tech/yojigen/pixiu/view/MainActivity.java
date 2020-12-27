@@ -158,25 +158,19 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(imageListAdapter);
             imageListAdapter.setListListener((v, illust, p) -> {
                 Intent intent = new Intent(MainActivity.this, IllustActivity.class);
-                intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getRecommendBundle(p));
+                if (position == 0) {
+                    intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getRecommendBundle(p));
+                } else {
+                    intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getFollowBundle(p));
+                }
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, v, illust.getId());
                 ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
             });
             return view;
         }
     };
-    int WRITE_REQUEST_CODE = 0x0012;
 
     protected void initViewEvent() {
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//        //intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-////        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, new Uri());
-//        startActivityForResult(intent, WRITE_REQUEST_CODE);
-//        DocumentFile child = DocumentFile
-//                .fromTreeUri(this, Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AD"))
-//                .createDirectory("child")
-//                .createFile("text/plain", "text.txt");
-//        viewBinding.toolbar.setNavigationOnClickListener(onClickListener);
         viewBinding.toolbar.inflateMenu(R.menu.menu_main);
         viewBinding.toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -189,26 +183,16 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+        viewBinding.navigation.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_setting:
+                    Intent intent = new Intent(this, SettingActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        });
     }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (data == null || resultCode != Activity.RESULT_OK) return;
-//        if (requestCode == WRITE_REQUEST_CODE) {
-//            DocumentFile child = DocumentFile
-//                    .fromTreeUri(this, data.getData())
-//                    .createDirectory("child")
-//                    .createFile("text/plain", "text.txt");
-//            System.out.println(data.getData());
-//            Uri uri = child.getUri();
-//            try {
-//                getContentResolver().openOutputStream(uri).write("成功".getBytes());
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }

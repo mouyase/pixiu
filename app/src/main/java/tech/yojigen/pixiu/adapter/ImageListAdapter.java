@@ -3,8 +3,10 @@ package tech.yojigen.pixiu.adapter;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,26 +16,34 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import tech.yojigen.pixiu.R;
+import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.listener.ImageListListener;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
+import tech.yojigen.pixiu.view.SettingActivity;
 import tech.yojigen.util.YShare;
 import tech.yojigen.util.YToast;
 
@@ -45,7 +55,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     private int column;
     private ImageListListener imageListListener;
 
-    private Boolean isSharing = false;
+    private AtomicBoolean isSharing = new AtomicBoolean(false);
+    private AtomicBoolean isSaving = new AtomicBoolean(false);
 
     public ImageListAdapter(List<IllustDTO> illusts, int column) {
         this.illusts = illusts;
@@ -84,9 +95,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                 .transition(withCrossFade(500))
                 .into(holder.image);
         holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(holder.itemView.getContext(), IllustActivity.class);
-
-//            holder.itemView.getContext().startActivity();
             if (imageListListener != null) {
                 imageListListener.onItemClick(v, illust, position);
             }
@@ -169,30 +177,63 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                         stringBuilder.append("https://www.pixiv.net/artworks/" + illust.getId());
                         YShare.text(stringBuilder.toString());
                     } else if (text.equals("分享图片")) {
-                        isSharing = true;
+                        isSharing.set(true);
                         MaterialDialog loginDialog = new MaterialDialog.Builder(holder.itemView.getContext())
                                 .content("图片加载中...")
                                 .progress(true, 0)
                                 .progressIndeterminateStyle(false)
                                 .show();
-                        loginDialog.setOnCancelListener(d -> isSharing = false);
+                        loginDialog.setOnCancelListener(d -> isSharing.set(false));
                         Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getImageUrls().getLarge()).into(new CustomTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                 loginDialog.cancel();
-                                if (isSharing) {
+                                if (isSharing.get()) {
                                     YShare.image(resource);
-                                    isSharing = false;
+                                    isSharing.set(false);
                                 }
                             }
 
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {
                                 loginDialog.cancel();
-                                isSharing = false;
+                                isSharing.set(false);
                             }
                         });
                     } else if (text.equals("保存原图")) {
+                        if (isSaving.compareAndSet(false, true)) {
+                            if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
+                                Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
+                                holder.itemView.getContext().startActivity(intent);
+                                YToast.show("选择图片保存目录");
+                                return;
+                            }
+                            Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    Uri uri = DocumentFile
+                                            .fromTreeUri(holder.itemView.getContext(), Uri.parse(PixiuApplication.getData().getPathUri()))
+                                            .createFile("image/*", illust.getId() + ".png").getUri();
+                                    try {
+                                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                        resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                                        holder.itemView.getContext().getContentResolver().openOutputStream(uri).write(byteArrayOutputStream.toByteArray());
+                                        String pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
+                                        pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
+                                        XToast.success(holder.itemView.getContext(), "图片保存在: " + pathString + "/" + illust.getId() + ".png").show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    isSaving.set(false);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                    XToast.error(holder.itemView.getContext(), "图片保存失败").show();
+                                    isSaving.set(false);
+                                }
+                            });
+                        }
                     }
                 })
                 .build().show();

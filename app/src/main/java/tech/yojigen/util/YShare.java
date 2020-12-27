@@ -37,7 +37,6 @@ public class YShare {
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
             Bitmap newBitmap = obscure(bitmap);
             newBitmap.compress(Bitmap.CompressFormat.PNG, 95, bufferedOutputStream);
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 95, bufferedOutputStream);
             bufferedOutputStream.flush();
             bufferedOutputStream.close();
             Uri uri = FileProvider.getUriForFile(YUtil.getInstance().getContext(), YUtil.getInstance().getPackageName() + ".provider", file);

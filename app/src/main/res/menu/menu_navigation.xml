@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/setting"
+            android:id="@+id/menu_setting"
             android:icon="@drawable/ic_setting"
             android:title="设置" />
         <item
-            android:id="@+id/open_source"
+            android:id="@+id/menu_open_source"
             android:icon="@drawable/ic_setting"
             android:title="开源" />
         <item
-            android:id="@+id/about"
+            android:id="@+id/menu_about"
             android:icon="@drawable/ic_setting"
             android:title="关于" />
     </group>

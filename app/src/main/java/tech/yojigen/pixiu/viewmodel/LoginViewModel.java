@@ -11,6 +11,7 @@ import tech.yojigen.pixiu.dto.UserAccountDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
+import tech.yojigen.util.YSetting;
 
 public class LoginViewModel extends ViewModel {
     private final Gson gson = new Gson();
@@ -38,7 +39,12 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(String body) {
                 UserAccountDTO userAccountDTO = gson.fromJson(body, UserAccountDTO.class);
-                PixiuApplication.setData(userAccountDTO);
+                YSetting.setObject(Value.SETTING_ACCOUNT, userAccountDTO);
+                PixiuApplication.getData().setUserAccount(userAccountDTO);
+                PixiuApplication.getData().setAccessToken(userAccountDTO.getAccessToken());
+                PixiuApplication.getData().setRefreshToken(userAccountDTO.getRefreshToken());
+                PixiuApplication.getData().setDeviceToken(userAccountDTO.getDeviceToken());
+                PixiuApplication.getData().setUser(userAccountDTO.getUser());
                 onLoginSuccess.postValue();
             }
         });

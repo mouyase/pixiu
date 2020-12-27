@@ -1,7 +1,7 @@
 <resources>
 
     <style name="Theme.Pixiu" parent="XUITheme.Phone">
-        <!--        <item name="android:windowContentTransitions">true</item>-->
+        <item name="android:windowContentTransitions">true</item>
         <!--        <item name="search_view_text_padding">0dp</item>-->
     </style>
 

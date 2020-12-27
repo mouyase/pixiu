@@ -111,7 +111,12 @@ public class PixivClient {
                         Response refreshResponse = getClient().newCall(refreshRequest).execute();
                         if (refreshResponse.isSuccessful()) {
                             UserAccountDTO userAccountDTO = gson.fromJson(refreshResponse.body().string(), UserAccountDTO.class);
-                            PixiuApplication.setData(userAccountDTO);
+                            YSetting.setObject(Value.SETTING_ACCOUNT, userAccountDTO);
+                            PixiuApplication.getData().setUserAccount(userAccountDTO);
+                            PixiuApplication.getData().setAccessToken(userAccountDTO.getAccessToken());
+                            PixiuApplication.getData().setRefreshToken(userAccountDTO.getRefreshToken());
+                            PixiuApplication.getData().setDeviceToken(userAccountDTO.getDeviceToken());
+                            PixiuApplication.getData().setUser(userAccountDTO.getUser());
                             String accessToken = PixiuApplication.getData().getAccessToken();
                             Request newRequest = request.newBuilder()
                                     .removeHeader("Authorization")

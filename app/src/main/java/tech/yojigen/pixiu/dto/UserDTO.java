@@ -1,5 +1,7 @@
 package tech.yojigen.pixiu.dto;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 public class UserDTO {
@@ -91,5 +93,12 @@ public class UserDTO {
 
     public void setImageUrls(ImageUrls imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    public String getHeadImage() {
+        if (TextUtils.isEmpty(getImageUrls().getMedium())) {
+            return getImageUrls().getPx170();
+        }
+        return getImageUrls().getMedium();
     }
 }

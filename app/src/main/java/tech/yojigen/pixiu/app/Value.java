@@ -9,6 +9,7 @@ public class Value {
     public static final String SETTING_PASSWORD = "password";
     public static final String SETTING_ACCOUNT = "SETTING_ACCOUNT";
     public static final String SETTING_NETWORK_MODE = "SETTING_NETWORK_MODE";
+    public static final String SETTING_PATH_URL = "SETTING_PATH_URL";
 
     public static final String BUNDLE_KEY_SEARCH = "BUNDLE_KEY_SEARCH";
     public static final String BUNDLE_ILLUST_LIST = "BUNDLE_ILLUST_LIST";

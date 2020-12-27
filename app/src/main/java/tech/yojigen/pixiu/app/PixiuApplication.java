@@ -5,7 +5,10 @@ import android.app.Application;
 import com.mob.MobSDK;
 import com.xuexiang.xui.XUI;
 
+import java.util.HashMap;
+
 import tech.yojigen.pixiu.dto.UserAccountDTO;
+import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YUtil;
 
@@ -38,20 +41,12 @@ public class PixiuApplication extends Application {
             data.setDeviceToken(userAccountDTO.getDeviceToken());
             data.setUser(userAccountDTO.getUser());
         }
+        data.setFavouriteMap(new HashMap<>());
+        data.setPathUri(YSetting.get(Value.SETTING_PATH_URL, ""));
+        data.setNetworkMode(YSetting.get(Value.SETTING_NETWORK_MODE, PixivClient.MODE_NO_SNI));
     }
 
     public static Data getData() {
         return data;
-    }
-
-    public static void setData(UserAccountDTO userAccountDTO) {
-        if (userAccountDTO != null) {
-            YSetting.setObject(Value.SETTING_ACCOUNT, userAccountDTO);
-            data.setUserAccount(userAccountDTO);
-            data.setAccessToken(userAccountDTO.getAccessToken());
-            data.setRefreshToken(userAccountDTO.getRefreshToken());
-            data.setDeviceToken(userAccountDTO.getDeviceToken());
-            data.setUser(userAccountDTO.getUser());
-        }
     }
 }

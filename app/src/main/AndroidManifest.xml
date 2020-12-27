@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pixiu">
-        <activity android:name=".view.IllustActivity"></activity>
+        <activity android:name=".view.SettingActivity"></activity>
+        <activity android:name=".view.InfoActivity" />
+        <activity android:name=".view.IllustActivity" />
         <activity android:name=".view.SearchResultActivity" />
         <activity
             android:name=".view.SearchActivity"

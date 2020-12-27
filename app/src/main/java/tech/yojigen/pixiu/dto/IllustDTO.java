@@ -2,6 +2,9 @@ package tech.yojigen.pixiu.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class IllustDTO {
     @SerializedName("id")
     private String id;
@@ -25,6 +28,23 @@ public class IllustDTO {
     private ImageUrls imageUrls;
     @SerializedName("is_bookmarked")
     private boolean isBookmarked;
+    @SerializedName("meta_single_page")
+    private MetaSinglePage metaSinglePage;
+    @SerializedName("meta_pages")
+    private List<ImageUrls> metaPages;
+
+    public class MetaSinglePage {
+        @SerializedName("original_image_url")
+        String original;
+
+        public String getOriginal() {
+            return original;
+        }
+
+        public void setOriginal(String original) {
+            this.original = original;
+        }
+    }
 
     public class ImageUrls {
         @SerializedName("square_medium")
@@ -33,6 +53,16 @@ public class IllustDTO {
         private String medium;
         @SerializedName("large")
         private String large;
+        @SerializedName("original")
+        private String original;
+
+        public String getOriginal() {
+            return original;
+        }
+
+        public void setOriginal(String original) {
+            this.original = original;
+        }
 
         public String getSquare() {
             return square;
@@ -139,23 +169,37 @@ public class IllustDTO {
         this.user = user;
     }
 
+    public MetaSinglePage getMetaSinglePage() {
+        return metaSinglePage;
+    }
+
+    public void setMetaSinglePage(MetaSinglePage metaSinglePage) {
+        this.metaSinglePage = metaSinglePage;
+    }
+
+    public List<ImageUrls> getMetaPages() {
+        return metaPages;
+    }
+
+    public void setMetaPages(List<ImageUrls> metaPages) {
+        this.metaPages = metaPages;
+    }
+
     public boolean isBookmarked() {
         return isBookmarked;
     }
 
 
     public boolean isSingle() {
-        if (this.pageCount > 1) {
-            return false;
-        }
-        return true;
+        return this.pageCount <= 1;
     }
 
 
     public void setBookmarked(boolean bookmarked) {
         isBookmarked = bookmarked;
     }
-//    public List<String> getLargeList() {
+
+    //    public List<String> getLargeList() {
 //        List<String> urlList = new ArrayList<>();
 //        if (isSingle()) {
 //
@@ -165,8 +209,15 @@ public class IllustDTO {
 //        return urlList;
 //    }
 //
-//    public List<String> getOriginalList() {
-//        List<String> urlList = new ArrayList<>();
-//        return urlList;
-//    }
+    public List<String> getOriginalList() {
+        List<String> urlList = new ArrayList<>();
+        if (isSingle()) {
+            urlList.add(getMetaSinglePage().getOriginal());
+        } else {
+            for (ImageUrls imageUrls : getMetaPages()) {
+                urlList.add(imageUrls.getOriginal());
+            }
+        }
+        return urlList;
+    }
 }
