@@ -30,6 +30,25 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="pixiv.me" />
+                <data android:host="pixiv.net" />
+                <data android:host="www.pixiv.me" />
+                <data android:host="www.pixiv.net" />
+                <data android:pathPrefix="/member.php" />
+                <data android:pathPrefix="/member_illust.php" />
+                <data android:pathPrefix="/artworks" />
+                <data android:pathPrefix="/en/artworks" />
+                <data android:pathPrefix="/user" />
+                <data android:pathPrefix="/i" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".view.MainActivity"

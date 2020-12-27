@@ -3,11 +3,11 @@
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates
-                src="system"
-                overridePins="true" />
+                overridePins="true"
+                src="system" />
             <certificates
-                src="user"
-                overridePins="true" />
+                overridePins="true"
+                src="user" />
         </trust-anchors>
     </base-config>
 </network-security-config>
