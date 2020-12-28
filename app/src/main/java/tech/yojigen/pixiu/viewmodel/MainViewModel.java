@@ -94,17 +94,19 @@ public class MainViewModel extends ViewModel {
 
     public String getRecommendBundle(int position) {
         BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
+        bundleIllustDTO.setPosition(position);
         bundleIllustDTO.setNextUrl(recommendNextUrl);
         bundleIllustDTO.setIllustList(getRecommendList().getValue());
-        bundleIllustDTO.setPosition(position);
+        bundleIllustDTO.setMode(BundleIllustDTO.MODE_NORMAL);
         return bundleIllustDTO.toJson();
     }
 
     public String getFollowBundle(int position) {
         BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
+        bundleIllustDTO.setPosition(position);
         bundleIllustDTO.setNextUrl(followedNextUrl);
         bundleIllustDTO.setIllustList(getFollowedList().getValue());
-        bundleIllustDTO.setPosition(position);
+        bundleIllustDTO.setMode(BundleIllustDTO.MODE_NORMAL);
         return bundleIllustDTO.toJson();
     }
 

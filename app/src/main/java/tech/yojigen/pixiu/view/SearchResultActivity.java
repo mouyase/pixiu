@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -146,6 +148,12 @@ public class SearchResultActivity extends AppCompatActivity {
                 refreshLayout.finishLoadMore(true);
                 refreshLayout.finishRefresh(true);
                 imageListAdapter.notifyItemInserted(illusts.size());
+            });
+            imageListAdapter.setListListener((v, illust, p) -> {
+                Intent intent = new Intent(SearchResultActivity.this, IllustActivity.class);
+                intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getBundle(position, p));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchResultActivity.this, v, illust.getId());
+                ActivityCompat.startActivity(SearchResultActivity.this, intent, options.toBundle());
             });
             recyclerView.setAdapter(imageListAdapter);
             return view;

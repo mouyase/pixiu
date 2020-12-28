@@ -5,11 +5,33 @@ import com.google.gson.Gson;
 import java.util.List;
 
 public class BundleIllustDTO {
+    public static final int MODE_NORMAL = 0x1000;
+    public static final int MODE_SINGLE = 0x2000;
+    public static final int MODE_SEARCH = 0x3000;
+
     private int position;
     private String nextUrl;
-    private int mode;
+    private int mode = MODE_NORMAL;
     private int nextTimes;
+    private int searchIndex;
+    private String searchKey;
     private List<IllustDTO> illustList;
+
+    public String getSearchKey() {
+        return searchKey;
+    }
+
+    public void setSearchKey(String searchKey) {
+        this.searchKey = searchKey;
+    }
+
+    public int getSearchIndex() {
+        return searchIndex;
+    }
+
+    public void setSearchIndex(int searchIndex) {
+        this.searchIndex = searchIndex;
+    }
 
     public int getPosition() {
         return position;

@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -55,18 +56,14 @@ public class IllustActivity extends AppCompatActivity {
     private IllustViewModel viewModel;
     private ActivityIllustBinding viewBinding;
 
-    String nextUrl;
-
     BundleIllustDTO bundleIllustDTO;
     ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewBinding = ActivityIllustBinding.inflate(getLayoutInflater());
-
-
         postponeEnterTransition();
+        viewBinding = ActivityIllustBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
         bundleIllustDTO = BundleIllustDTO.fromJson(getIntent().getStringExtra(Value.BUNDLE_ILLUST_LIST));
@@ -82,10 +79,24 @@ public class IllustActivity extends AppCompatActivity {
         viewModel.getIllustList().observe(this, illustDTOS -> {
             viewPagerAdapter.notifyItemInserted(illustDTOS.size());
         });
-        viewModel.setIllustList(bundleIllustDTO.getIllustList());
+        viewModel.setBundle(bundleIllustDTO);
     }
 
     private void initViewEvent() {
+        viewBinding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position > (viewModel.getIllustList().getValue().size() - 10)) {
+                    viewModel.getMoreData();
+                }
+                super.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+        });
     }
 
     private void initView() {
@@ -119,14 +130,6 @@ public class IllustActivity extends AppCompatActivity {
         viewBinding.viewPager.setAdapter(viewPagerAdapter);
 //        viewBinding.viewPager.setOffscreenPageLimit(-1);
         viewBinding.viewPager.setCurrentItem(bundleIllustDTO.getPosition(), false);
-
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreatePanelView(int featureId) {
-        return super.onCreatePanelView(featureId);
     }
 
     class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder> {

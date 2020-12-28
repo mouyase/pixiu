@@ -273,4 +273,8 @@ public class PixivClient {
             }
         });
     }
+
+    public void get(String nextUrl, PixivCallback pixivCallback) {
+        get(nextUrl, null, pixivCallback);
+    }
 }

@@ -49,7 +49,7 @@ public class RouterActivity extends AppCompatActivity {
             if (url.contains("https://www.pixiv.net/artworks/") || url.contains("https://www.pixiv.net/member_illust.php")) {
                 Matcher matcher = Pattern.compile("[0-9]+").matcher(url);
                 if (matcher.find()) {
-                    System.out.println(matcher.group(0));
+                    String id = matcher.group(0);
                 }
             } else if (url.contains("https://www.pixiv.net/users/")) {
             }

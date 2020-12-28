@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import tech.yojigen.pixiu.app.Value;
+import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.IllustListDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
@@ -149,5 +150,16 @@ public class SearchResultViewModel extends ViewModel {
 
     public List<MutableLiveData<List<IllustDTO>>> getIllustListList() {
         return illustListList;
+    }
+
+    public String getBundle(int index, int position) {
+        BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
+        bundleIllustDTO.setPosition(position);
+        bundleIllustDTO.setNextTimes(nextTimesList.get(index));
+        bundleIllustDTO.setSearchIndex(index);
+        bundleIllustDTO.setSearchKey(searchKey);
+        bundleIllustDTO.setIllustList(illustListList.get(index).getValue());
+        bundleIllustDTO.setMode(BundleIllustDTO.MODE_SEARCH);
+        return bundleIllustDTO.toJson();
     }
 }
