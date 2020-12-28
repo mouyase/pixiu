@@ -56,7 +56,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     private ImageListListener imageListListener;
 
     private AtomicBoolean isSharing = new AtomicBoolean(false);
-    private AtomicBoolean isSaving = new AtomicBoolean(false);
 
     public ImageListAdapter(List<IllustDTO> illusts, int column) {
         this.illusts = illusts;
@@ -201,19 +200,25 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                             }
                         });
                     } else if (text.equals("保存原图")) {
-                        if (isSaving.compareAndSet(false, true)) {
-                            if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
-                                Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
-                                holder.itemView.getContext().startActivity(intent);
-                                YToast.show("选择图片保存目录");
-                                return;
-                            }
-                            Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
-                                @Override
-                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                    Uri uri = DocumentFile
-                                            .fromTreeUri(holder.itemView.getContext(), Uri.parse(PixiuApplication.getData().getPathUri()))
-                                            .createFile("image/*", illust.getId() + ".png").getUri();
+                        if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
+                            Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
+                            holder.itemView.getContext().startActivity(intent);
+                            YToast.show("选择图片保存目录");
+                            return;
+                        }
+                        XToast.info(holder.itemView.getContext(), "正在保存...").show();
+                        Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                synchronized (this) {
+                                    String fileName = illust.getId() + ".png";
+                                    DocumentFile documentFile = DocumentFile.fromTreeUri(holder.itemView.getContext(), Uri.parse(PixiuApplication.getData().getPathUri()));
+                                    Uri uri;
+                                    if (documentFile.findFile(fileName) == null) {
+                                        uri = documentFile.createFile("image/*", illust.getId() + ".png").getUri();
+                                    } else {
+                                        uri = documentFile.findFile(fileName).getUri();
+                                    }
                                     try {
                                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                                         resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -224,16 +229,14 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    isSaving.set(false);
                                 }
+                            }
 
-                                @Override
-                                public void onLoadCleared(@Nullable Drawable placeholder) {
-                                    XToast.error(holder.itemView.getContext(), "图片保存失败").show();
-                                    isSaving.set(false);
-                                }
-                            });
-                        }
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                                XToast.error(holder.itemView.getContext(), "图片保存失败").show();
+                            }
+                        });
                     }
                 })
                 .build().show();

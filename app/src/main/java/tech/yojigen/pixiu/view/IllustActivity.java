@@ -146,7 +146,6 @@ public class IllustActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewPagerViewHolder holder, int position) {
             AtomicBoolean isSharing = new AtomicBoolean(false);
-            AtomicBoolean isSaving = new AtomicBoolean(false);
             IllustDTO illust = illusts.get(position);
             boolean isBookmarked = illust.isBookmarked();
             if (PixiuApplication.getData().getFavouriteMap().containsKey(illust.getId())) {
@@ -156,11 +155,7 @@ public class IllustActivity extends AppCompatActivity {
                 PixiuApplication.getData().getFavouriteMap().put(illust.getId(), isBookmarked);
             }
             String bookmarkUrl = isBookmarked ? Value.URL_API + "/v1/illust/bookmark/delete" : Value.URL_API + "/v2/illust/bookmark/add";
-            if (isBookmarked) {
-                holder.like.setChecked(true);
-            } else {
-                holder.like.setChecked(false);
-            }
+            holder.like.setChecked(isBookmarked);
             if (illust.isSingle()) {
                 holder.count.setVisibility(View.GONE);
             } else {
@@ -172,17 +167,7 @@ public class IllustActivity extends AppCompatActivity {
             Glide.with(holder.itemView.getContext())
                     .load(illust.getUser().getHeadImage())
                     .transition(withCrossFade(500))
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            holder.head.setImageDrawable(resource);
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                        }
-                    });
+                    .into(holder.head);
             holder.itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
                 ViewCompat.setTransitionName(holder.image, illust.getId());
                 getWindow().getSharedElementEnterTransition().addListener(new android.transition.Transition.TransitionListener() {
@@ -219,20 +204,25 @@ public class IllustActivity extends AppCompatActivity {
                     .transition(withCrossFade(500))
                     .into(holder.image);
             holder.save.setOnClickListener(v -> {
-                if (!isSaving.get()) {
-                    isSaving.set(true);
-                    if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
-                        Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
-                        holder.itemView.getContext().startActivity(intent);
-                        YToast.show("选择图片保存目录");
-                        return;
-                    }
-                    Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            Uri uri = DocumentFile
-                                    .fromTreeUri(holder.itemView.getContext(), Uri.parse(PixiuApplication.getData().getPathUri()))
-                                    .createFile("image/*", illust.getId() + ".png").getUri();
+                if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
+                    holder.itemView.getContext().startActivity(intent);
+                    YToast.show("选择图片保存目录");
+                    return;
+                }
+                XToast.info(holder.itemView.getContext(), "正在保存...").show();
+                Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        synchronized (this) {
+                            String fileName = illust.getId() + ".png";
+                            DocumentFile documentFile = DocumentFile.fromTreeUri(holder.itemView.getContext(), Uri.parse(PixiuApplication.getData().getPathUri()));
+                            Uri uri;
+                            if (documentFile.findFile(fileName) == null) {
+                                uri = documentFile.createFile("image/*", illust.getId() + ".png").getUri();
+                            } else {
+                                uri = documentFile.findFile(fileName).getUri();
+                            }
                             try {
                                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                                 resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -243,16 +233,14 @@ public class IllustActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            isSaving.set(false);
                         }
+                    }
 
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            XToast.error(holder.itemView.getContext(), "图片保存失败").show();
-                            isSaving.set(false);
-                        }
-                    });
-                }
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        XToast.error(holder.itemView.getContext(), "图片保存失败").show();
+                    }
+                });
             });
             holder.resend.setOnClickListener(v -> {
                 if (!isSharing.get()) {
