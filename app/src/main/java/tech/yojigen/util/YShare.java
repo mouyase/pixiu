@@ -49,7 +49,7 @@ public class YShare {
             YUtil.getInstance().getContext().startActivity(shareIntent);
         } catch (IOException e) {
             e.printStackTrace();
-            YToast.show("图片分享失败");
+            YXToast.error("图片分享失败");
         }
     }
 

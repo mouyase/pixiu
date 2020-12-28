@@ -46,6 +46,7 @@ import tech.yojigen.pixiu.network.PixivData;
 import tech.yojigen.pixiu.view.SettingActivity;
 import tech.yojigen.util.YShare;
 import tech.yojigen.util.YToast;
+import tech.yojigen.util.YXToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -126,12 +127,12 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                         PixivClient.getInstance().post(bookmarkUrl, pixivData, new PixivCallback() {
                             @Override
                             public void onFailure() {
-                                YToast.show("收藏失败");
+                                YXToast.error("收藏失败");
                             }
 
                             @Override
                             public void onResponse(String body) {
-                                YToast.show("收藏成功");
+                                YXToast.success("收藏成功");
                             }
                         });
                     } else if (text.equals("悄悄收藏")) {
@@ -139,12 +140,12 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                         PixivClient.getInstance().post(bookmarkUrl, pixivData, new PixivCallback() {
                             @Override
                             public void onFailure() {
-                                YToast.show("悄悄收藏失败");
+                                YXToast.error("悄悄收藏失败");
                             }
 
                             @Override
                             public void onResponse(String body) {
-                                YToast.show("悄悄收藏成功");
+                                YXToast.success("悄悄收藏成功");
                             }
                         });
                     } else if (text.equals("取消收藏")) {
@@ -152,12 +153,12 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                         PixivClient.getInstance().post(bookmarkUrl, pixivData, new PixivCallback() {
                             @Override
                             public void onFailure() {
-                                YToast.show("取消收藏失败");
+                                YXToast.error("取消收藏失败");
                             }
 
                             @Override
                             public void onResponse(String body) {
-                                YToast.show("取消收藏成功");
+                                YXToast.success("取消收藏成功");
                             }
                         });
                     } else if (text.equals("复制ID")) {
@@ -203,7 +204,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                         if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
                             Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
                             holder.itemView.getContext().startActivity(intent);
-                            YToast.show("选择图片保存目录");
+                            YXToast.warning("请设置图片保存目录");
                             return;
                         }
                         XToast.info(holder.itemView.getContext(), "正在保存...").show();
@@ -234,7 +235,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
 
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {
-                                XToast.error(holder.itemView.getContext(), "图片保存失败").show();
+                                YXToast.error("图片保存失败");
                             }
                         });
                     }

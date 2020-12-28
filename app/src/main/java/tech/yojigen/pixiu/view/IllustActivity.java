@@ -49,6 +49,7 @@ import tech.yojigen.pixiu.network.PixivData;
 import tech.yojigen.pixiu.viewmodel.IllustViewModel;
 import tech.yojigen.util.YShare;
 import tech.yojigen.util.YToast;
+import tech.yojigen.util.YXToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -210,7 +211,7 @@ public class IllustActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
                     Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
                     holder.itemView.getContext().startActivity(intent);
-                    YToast.show("选择图片保存目录");
+                    YXToast.warning("请设置图片保存目录");
                     return;
                 }
                 XToast.info(holder.itemView.getContext(), "正在保存...").show();
@@ -278,10 +279,10 @@ public class IllustActivity extends AppCompatActivity {
                     @Override
                     public void onFailure() {
                         if (illust.isBookmarked()) {
-                            YToast.show("收藏失败");
+                            YXToast.error("收藏失败");
                             holder.like.setChecked(false);
                         } else {
-                            YToast.show("取消收藏失败");
+                            YXToast.error("取消收藏失败");
                             holder.like.setChecked(true);
                         }
                     }
@@ -289,12 +290,12 @@ public class IllustActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String body) {
                         if (illust.isBookmarked()) {
-                            YToast.show("取消收藏成功");
+                            YXToast.success("取消收藏成功");
                             illust.setBookmarked(false);
                             holder.like.setChecked(false);
                             PixiuApplication.getData().getFavouriteMap().put(illust.getId(), false);
                         } else {
-                            YToast.show("收藏成功");
+                            YXToast.success("收藏成功");
                             illust.setBookmarked(true);
                             holder.like.setChecked(true);
                             PixiuApplication.getData().getFavouriteMap().put(illust.getId(), true);
@@ -308,12 +309,12 @@ public class IllustActivity extends AppCompatActivity {
                     PixivClient.getInstance().post(bookmarkUrl, pixivData, new PixivCallback() {
                         @Override
                         public void onFailure() {
-                            YToast.show("悄悄收藏失败");
+                            YXToast.error("悄悄收藏失败");
                         }
 
                         @Override
                         public void onResponse(String body) {
-                            YToast.show("悄悄收藏成功");
+                            YXToast.success("悄悄收藏成功");
                             illust.setBookmarked(true);
                             holder.like.setChecked(true);
                             PixiuApplication.getData().getFavouriteMap().put(illust.getId(), true);

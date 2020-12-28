@@ -34,6 +34,7 @@ import tech.yojigen.util.YDigest;
 import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YToast;
 import tech.yojigen.util.YUtil;
+import tech.yojigen.util.YXToast;
 
 public class PixivClient {
     private static final PixivClient mPixivClient = new PixivClient();
@@ -128,7 +129,7 @@ public class PixivClient {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             YUtil.getInstance().getContext().startActivity(intent);
-                            YToast.show("用户过期，请重新登陆");
+                            YXToast.warning("用户过期，请重新登陆");
                         }
                     }
                 }
