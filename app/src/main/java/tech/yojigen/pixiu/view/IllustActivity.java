@@ -39,6 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.PixiuApplication;
+import tech.yojigen.pixiu.app.Util;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityIllustBinding;
 import tech.yojigen.pixiu.dto.BundleIllustDTO;
@@ -208,43 +209,7 @@ public class IllustActivity extends AppCompatActivity {
                     .transition(withCrossFade(500))
                     .into(holder.image);
             holder.save.setOnClickListener(v -> {
-                if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
-                    Intent intent = new Intent(holder.itemView.getContext(), SettingActivity.class);
-                    holder.itemView.getContext().startActivity(intent);
-                    YXToast.warning("请设置图片保存目录");
-                    return;
-                }
-                XToast.info(holder.itemView.getContext(), "正在保存...").show();
-                Glide.with(holder.itemView.getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        synchronized (this) {
-                            String fileName = illust.getId() + ".png";
-                            DocumentFile documentFile = DocumentFile.fromTreeUri(holder.itemView.getContext(), Uri.parse(PixiuApplication.getData().getPathUri()));
-                            Uri uri;
-                            if (documentFile.findFile(fileName) == null) {
-                                uri = documentFile.createFile("image/*", illust.getId() + ".png").getUri();
-                            } else {
-                                uri = documentFile.findFile(fileName).getUri();
-                            }
-                            try {
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                                holder.itemView.getContext().getContentResolver().openOutputStream(uri).write(byteArrayOutputStream.toByteArray());
-                                String pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
-                                pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
-                                XToast.success(holder.itemView.getContext(), "图片保存在: " + pathString + "/" + illust.getId() + ".png").show();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        XToast.error(holder.itemView.getContext(), "图片保存失败").show();
-                    }
-                });
+                Util.saveImage(holder.itemView.getContext(), illust);
             });
             holder.resend.setOnClickListener(v -> {
                 if (!isSharing.get()) {

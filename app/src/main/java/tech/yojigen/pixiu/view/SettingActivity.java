@@ -112,19 +112,6 @@ public class SettingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             pathSelect.setDetailText(pathString);
-//            DocumentFile child = DocumentFile
-//                    .fromTreeUri(this, data.getData())
-//                    .createDirectory("child")
-//                    .createFile("text/plain", "text.txt");
-//            System.out.println(data.getData());
-//            Uri uri = child.getUri();
-//            try {
-//                getContentResolver().openOutputStream(uri).write("成功".getBytes());
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
         }
-//        }
     }
 }

@@ -31,7 +31,7 @@ public class IllustDTO {
     @SerializedName("meta_single_page")
     private MetaSinglePage metaSinglePage;
     @SerializedName("meta_pages")
-    private List<ImageUrls> metaPages;
+    private List<MetaPage> metaPages;
 
     public class MetaSinglePage {
         @SerializedName("original_image_url")
@@ -43,6 +43,19 @@ public class IllustDTO {
 
         public void setOriginal(String original) {
             this.original = original;
+        }
+    }
+
+    public class MetaPage {
+        @SerializedName("image_urls")
+        private ImageUrls imageUrls;
+
+        public ImageUrls getImageUrls() {
+            return imageUrls;
+        }
+
+        public void setImageUrls(ImageUrls imageUrls) {
+            this.imageUrls = imageUrls;
         }
     }
 
@@ -125,6 +138,14 @@ public class IllustDTO {
         return caption;
     }
 
+    public List<MetaPage> getMetaPages() {
+        return metaPages;
+    }
+
+    public void setMetaPages(List<MetaPage> metaPages) {
+        this.metaPages = metaPages;
+    }
+
     public void setCaption(String caption) {
         this.caption = caption;
     }
@@ -177,13 +198,6 @@ public class IllustDTO {
         this.metaSinglePage = metaSinglePage;
     }
 
-    public List<ImageUrls> getMetaPages() {
-        return metaPages;
-    }
-
-    public void setMetaPages(List<ImageUrls> metaPages) {
-        this.metaPages = metaPages;
-    }
 
     public boolean isBookmarked() {
         return isBookmarked;
@@ -214,8 +228,8 @@ public class IllustDTO {
         if (isSingle()) {
             urlList.add(getMetaSinglePage().getOriginal());
         } else {
-            for (ImageUrls imageUrls : getMetaPages()) {
-                urlList.add(imageUrls.getOriginal());
+            for (MetaPage metaPage : getMetaPages()) {
+                urlList.add(metaPage.getImageUrls().getOriginal());
             }
         }
         return urlList;
