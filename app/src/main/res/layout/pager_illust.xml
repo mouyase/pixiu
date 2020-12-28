@@ -57,13 +57,14 @@
                 android:textColor="#FFF"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/ll1"
+                android:transitionName="@string/INFO_TRANSITION_TITLE"
+                app:layout_constraintBottom_toTopOf="@+id/illust_ll2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/ll1"
+                android:id="@+id/illust_ll1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -72,13 +73,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/ll2"
+                app:layout_constraintEnd_toStartOf="@+id/illust_ll2"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <com.xuexiang.xui.widget.imageview.RadiusImageView
                     android:id="@+id/head"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:transitionName="@string/INFO_TRANSITION_HEAD"
                     app:riv_border_color="#FFF"
                     app:riv_border_width="3dp"
                     app:riv_is_circle="true" />
@@ -91,7 +93,8 @@
                     android:ellipsize="end"
                     android:text="\@"
                     android:textColor="#FFF"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:transitionName="@string/INFO_TRANSITION_AT" />
 
                 <TextView
                     android:id="@+id/artist"
@@ -101,12 +104,13 @@
                     android:singleLine="true"
                     android:text="TextView"
                     android:textColor="#FFF"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:transitionName="@string/INFO_TRANSITION_ARTIST" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll2"
+                android:id="@+id/illust_ll2"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="8dp"

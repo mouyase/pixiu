@@ -32,6 +32,8 @@ public class IllustDTO {
     private MetaSinglePage metaSinglePage;
     @SerializedName("meta_pages")
     private List<MetaPage> metaPages;
+    @SerializedName("tags")
+    private List<TagDTO> tags;
 
     public class MetaSinglePage {
         @SerializedName("original_image_url")
@@ -156,6 +158,14 @@ public class IllustDTO {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public List<TagDTO> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TagDTO> tags) {
+        this.tags = tags;
     }
 
     public int getPageCount() {

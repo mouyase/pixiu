@@ -47,7 +47,7 @@ public class HotTagListAdapter extends RecyclerView.Adapter<HotTagListAdapter.Vi
         } else {
             holder.translatedName.setText(tagDTO.getTranslatedName());
         }
-        holder.name.setText("#" + tagDTO.getName());
+        holder.name.setText("#" + tagDTO.getTag());
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         layoutParams.width = itemWH;
         layoutParams.height = itemWH;
@@ -67,7 +67,7 @@ public class HotTagListAdapter extends RecyclerView.Adapter<HotTagListAdapter.Vi
                 .into(holder.image);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), SearchResultActivity.class);
-            intent.putExtra(Value.BUNDLE_KEY_SEARCH, tagDTO.getName());
+            intent.putExtra(Value.BUNDLE_KEY_SEARCH, tagDTO.getTag());
             v.getContext().startActivity(intent);
         });
         holder.itemView.setOnLongClickListener(v -> {

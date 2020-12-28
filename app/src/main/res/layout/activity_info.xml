@@ -6,4 +6,154 @@
     android:layout_height="match_parent"
     tools:context=".view.InfoActivity">
 
+    <com.xuexiang.xui.widget.actionbar.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tb_centerGravity="left"
+        app:tb_titleText="作品信息" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar"
+        app:layout_constraintVertical_bias="1.0">
+
+
+        <LinearLayout
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.xuexiang.xui.widget.imageview.RadiusImageView
+                android:id="@+id/head"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:transitionName="@string/INFO_TRANSITION_HEAD"
+                app:riv_border_color="#DDD"
+                app:riv_border_width="3dp"
+                app:riv_is_circle="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="\@"
+                    android:textColor="#000"
+                    android:textSize="24sp"
+                    android:transitionName="@string/INFO_TRANSITION_AT" />
+
+                <TextView
+                    android:id="@+id/artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="柴まろん"
+                    android:textColor="#000"
+                    android:textSize="24sp"
+                    android:transitionName="@string/INFO_TRANSITION_ARTIST" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/at_smale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="\@"
+                    android:textColor="#666"
+                    android:textSize="14sp"
+                    android:transitionName="@string/INFO_TRANSITION_AT" />
+
+                <TextView
+                    android:id="@+id/artist_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="sivamaron"
+                    android:textColor="#666"
+                    android:textSize="14sp"
+                    android:transitionName="@string/INFO_TRANSITION_ARTIST" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="みかんチャレンジ"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:transitionName="@string/INFO_TRANSITION_TITLE" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:autoLink="all"
+                android:text="されるがままの黒柴と対抗意識を持つ二匹"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider" />
+
+            <com.xuexiang.xui.widget.flowlayout.FlowLayout
+                android:id="@+id/tags_flow_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

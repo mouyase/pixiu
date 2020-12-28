@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class TagDTO {
     @SerializedName("tag")
+    private String tag;
+    @SerializedName("name")
     private String name;
     @SerializedName("translated_name")
     private String translatedName;
@@ -16,6 +18,14 @@ public class TagDTO {
 
     public String getName() {
         return name;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public void setName(String name) {

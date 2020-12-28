@@ -3,9 +3,7 @@ package tech.yojigen.pixiu.view;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -26,14 +25,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.gson.Gson;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
-import com.xuexiang.xui.widget.toast.XToast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -49,7 +45,6 @@ import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
 import tech.yojigen.pixiu.viewmodel.IllustViewModel;
 import tech.yojigen.util.YShare;
-import tech.yojigen.util.YToast;
 import tech.yojigen.util.YXToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -172,7 +167,17 @@ public class IllustActivity extends AppCompatActivity {
             Glide.with(holder.itemView.getContext())
                     .load(illust.getUser().getHeadImage())
                     .transition(withCrossFade(500))
-                    .into(holder.head);
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            holder.head.setImageDrawable(resource);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
+                    });
             holder.itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
                 ViewCompat.setTransitionName(holder.image, illust.getId());
                 getWindow().getSharedElementEnterTransition().addListener(new android.transition.Transition.TransitionListener() {
@@ -208,9 +213,7 @@ public class IllustActivity extends AppCompatActivity {
                     .load(illust.getImageUrls().getMedium())
                     .transition(withCrossFade(500))
                     .into(holder.image);
-            holder.save.setOnClickListener(v -> {
-                Util.saveImage(holder.itemView.getContext(), illust);
-            });
+            holder.save.setOnClickListener(v -> Util.saveImage(holder.itemView.getContext(), illust));
             holder.resend.setOnClickListener(v -> {
                 if (!isSharing.get()) {
                     isSharing.set(true);
@@ -288,11 +291,17 @@ public class IllustActivity extends AppCompatActivity {
                 }
                 return true;
             });
-//            holder.info.setOnClickListener(v -> {
-//                Intent intent = new Intent(IllustActivity.this, InfoActivity.class);
-//                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(IllustActivity.this);
-//                ActivityCompat.startActivity(IllustActivity.this, intent, options.toBundle());
-//            });
+            holder.info.setOnClickListener(v -> {
+                Gson gson = new Gson();
+                Intent intent = new Intent(IllustActivity.this, InfoActivity.class);
+                Pair<View, String> title = new Pair<>(holder.title, ViewCompat.getTransitionName(holder.title));
+                Pair<View, String> head = new Pair<>(holder.head, ViewCompat.getTransitionName(holder.head));
+                Pair<View, String> at = new Pair<>(holder.at, ViewCompat.getTransitionName(holder.at));
+                Pair<View, String> artist = new Pair<>(holder.artist, ViewCompat.getTransitionName(holder.artist));
+                intent.putExtra(Value.BUNDLE_ILLUST, gson.toJson(illust));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(IllustActivity.this, title, head, at, artist);
+                ActivityCompat.startActivity(IllustActivity.this, intent, options.toBundle());
+            });
         }
 
         @Override
@@ -302,7 +311,7 @@ public class IllustActivity extends AppCompatActivity {
 
         class ViewPagerViewHolder extends RecyclerView.ViewHolder {
             ImageView image, head, resend, save;
-            TextView count, title, artist;
+            TextView count, title, artist, at;
             ConstraintLayout info;
             ShineButton like;
 
@@ -312,6 +321,7 @@ public class IllustActivity extends AppCompatActivity {
                 head = itemView.findViewById(R.id.head);
                 count = itemView.findViewById(R.id.count);
                 title = itemView.findViewById(R.id.title);
+                at = itemView.findViewById(R.id.at);
                 artist = itemView.findViewById(R.id.artist);
                 resend = itemView.findViewById(R.id.resend);
                 save = itemView.findViewById(R.id.save);

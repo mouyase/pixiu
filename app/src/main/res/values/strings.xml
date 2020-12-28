@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">pixiu</string>
+    <string name="INFO_TRANSITION_TITLE">INFO_TRANSITION_TITLE</string>
+    <string name="INFO_TRANSITION_HEAD">INFO_TRANSITION_HEAD</string>
+    <string name="INFO_TRANSITION_AT">INFO_TRANSITION_AT</string>
+    <string name="INFO_TRANSITION_ARTIST">INFO_TRANSITION_ARTIST</string>
 </resources>

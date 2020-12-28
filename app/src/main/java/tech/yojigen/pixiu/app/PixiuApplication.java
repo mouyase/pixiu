@@ -1,8 +1,11 @@
 package tech.yojigen.pixiu.app;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
 
 import com.mob.MobSDK;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.xuexiang.xui.XUI;
 
 import java.util.HashMap;
@@ -24,7 +27,18 @@ public class PixiuApplication extends Application {
 
     private void initApplication() {
         XUI.init(this); //初始化UI框架
-        XUI.debug(true);  //开启UI框架调试日志
+
+        //判断是否为Debug版本
+        ApplicationInfo applicationInfo = getApplicationInfo();
+        if ((applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            Bugly.init(getApplicationContext(), "0b3fb1af22", true);
+            XUI.debug(true);
+        } else {
+            Bugly.init(getApplicationContext(), "0b3fb1af22", false);
+            XUI.debug(false);
+        }
+        Beta.autoCheckUpgrade = false;
+
 //        XHttpSDK.setBaseUrl(SettingSPUtils.getInstance().getApiURL());  //设置网络请求的基础地址
 
         MobSDK.init(this);//初始化MobSDK
