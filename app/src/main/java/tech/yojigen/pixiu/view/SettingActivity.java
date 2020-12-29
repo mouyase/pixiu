@@ -101,6 +101,7 @@ public class SettingActivity extends AppCompatActivity {
         safeMode.setOrientation(XUICommonListItemView.VERTICAL);
         safeMode.setDetailText("此功能仅为本地使用，不影响网页端设置");
         safeMode.setAccessoryType(XUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        safeMode.getSwitch().setChecked(PixiuApplication.getData().isSafeMode());
         safeMode.getSwitch().setOnCheckedChangeListener((v, isChecked) -> {
             YSetting.set(Value.SETTING_SAFE_MODE, isChecked);
             PixiuApplication.getData().setSafeMode(isChecked);

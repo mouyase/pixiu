@@ -2,7 +2,11 @@ package tech.yojigen.pixiu.app;
 
 import android.os.Build;
 
+import tech.yojigen.pixiu.BuildConfig;
+
 public class Value {
+    public static final String APP_VERSION = BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")";
+
     public static final String SETTING_ACCESS_TOKEN = "access_token";
     public static final String SETTING_REFRESH_TOKEN = "refresh_token";
     public static final String SETTING_USERNAME = "username";
@@ -11,6 +15,7 @@ public class Value {
     public static final String SETTING_NETWORK_MODE = "SETTING_NETWORK_MODE";
     public static final String SETTING_PATH_URL = "SETTING_PATH_URL";
     public static final String SETTING_SAFE_MODE = "SETTING_SAFE_MODE";
+    public static final String SETTING_LAST_VERSION = "SETTING_LAST_VERSION";
 
     public static final String BUNDLE_KEY_SEARCH = "BUNDLE_KEY_SEARCH";
     public static final String BUNDLE_ILLUST_LIST = "BUNDLE_ILLUST_LIST";

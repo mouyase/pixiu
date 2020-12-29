@@ -41,6 +41,7 @@ import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
+import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YXToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -110,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+
+        if (!Value.APP_VERSION.equals(YSetting.get(Value.SETTING_LAST_VERSION, ""))) {
+            showAbout();
+        }
     }
 
     private final PagerAdapter mPagerAdapter = new PagerAdapter() {
@@ -238,10 +243,26 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .show();
                     break;
+                case R.id.menu_about:
+                    showAbout();
+                    break;
                 default:
                     break;
             }
             return false;
         });
+    }
+
+    private void showAbout() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("1. 总之就是有了一些基础功能的版本");
+        new MaterialDialog.Builder(this)
+                .title("关于 pixiu v" + Value.APP_VERSION)
+                .content(stringBuilder.toString())
+                .positiveText("确定")
+                .cancelListener(dialog -> {
+                    YSetting.set(Value.SETTING_LAST_VERSION, Value.APP_VERSION);
+                })
+                .show();
     }
 }
