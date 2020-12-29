@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.Value;
+import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.TagDTO;
+import tech.yojigen.pixiu.view.IllustActivity;
 import tech.yojigen.pixiu.view.SearchResultActivity;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -71,7 +74,15 @@ public class HotTagListAdapter extends RecyclerView.Adapter<HotTagListAdapter.Vi
             v.getContext().startActivity(intent);
         });
         holder.itemView.setOnLongClickListener(v -> {
-//                onLongClick(holder, position);
+            Intent intent = new Intent(v.getContext(), IllustActivity.class);
+            List<IllustDTO> illustDTOList = new ArrayList<>();
+            illustDTOList.add(illust);
+            BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
+            bundleIllustDTO.setPosition(0);
+            bundleIllustDTO.setIllustList(illustDTOList);
+            bundleIllustDTO.setMode(BundleIllustDTO.MODE_SINGLE);
+            intent.putExtra(Value.BUNDLE_ILLUST_LIST, bundleIllustDTO.toJson());
+            v.getContext().startActivity(intent);
             return true;
         });
     }

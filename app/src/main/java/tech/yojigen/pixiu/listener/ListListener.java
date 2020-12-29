@@ -4,6 +4,6 @@ import android.view.View;
 
 import tech.yojigen.pixiu.dto.IllustDTO;
 
-public interface ImageListListener {
+public interface ListListener {
     public void onItemClick(View view, IllustDTO illust, int position);
 }

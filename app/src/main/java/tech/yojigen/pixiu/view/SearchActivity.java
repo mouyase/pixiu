@@ -21,7 +21,6 @@ import tech.yojigen.pixiu.viewmodel.SearchViewModel;
 public class SearchActivity extends AppCompatActivity {
     private SearchViewModel viewModel;
     private ActivitySearchBinding viewBinding;
-    private String searchKey;
     private HotTagListAdapter hotTagListAdapter;
 
     @Override
@@ -29,8 +28,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         viewBinding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-
-        searchKey = getIntent().getStringExtra(Value.BUNDLE_KEY_SEARCH);
 
         initViewModel();
         initView();
@@ -41,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         hotTagListAdapter = new HotTagListAdapter(viewModel.getHotTagList().getValue());
         viewModel.getHotTagList().observe(this, tagDTOS -> hotTagListAdapter.notifyItemInserted(tagDTOS.size()));
+        viewModel.getAutoCompliteArray().observe(this, strings -> viewBinding.searchView.setSuggestions(strings));
     }
 
     private void initViewEvent() {
@@ -53,7 +51,6 @@ public class SearchActivity extends AppCompatActivity {
 
         viewBinding.searchView.setVoiceSearch(false);
         viewBinding.searchView.setEllipsize(true);
-        viewBinding.searchView.setSuggestions(new String[]{"aaa", "bbb", "ccc"});
         viewBinding.searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -65,7 +62,6 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Do some magic
                 return false;
             }
         });

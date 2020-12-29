@@ -59,7 +59,7 @@ public class SearchResultActivity extends AppCompatActivity {
         viewBinding.titleBar.setTitle(searchKey);
         viewBinding.searchView.setVoiceSearch(false);
         viewBinding.searchView.setEllipsize(true);
-        viewBinding.searchView.setSuggestions(new String[]{"aaa", "bbb", "ccc"});
+//        viewBinding.searchView.setSuggestions(new String[]{"aaa", "bbb", "ccc"});
         viewBinding.searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

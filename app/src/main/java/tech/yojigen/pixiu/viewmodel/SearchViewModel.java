@@ -18,11 +18,35 @@ import tech.yojigen.pixiu.network.PixivData;
 public class SearchViewModel extends ViewModel {
     private Gson gson = new Gson();
     private MutableLiveData<List<TagDTO>> hotTagList = new MutableLiveData<>();
+    private MutableLiveData<String[]> autoCompliteArray = new MutableLiveData<>();
 
     public SearchViewModel() {
         hotTagList.setValue(new ArrayList<>());
         getHotTags();
     }
+
+//    public void getAutoComplete(String keyword) {
+//        PixivData pixivData = new PixivData.Builder()
+//                .set("merge_plain_keyword_results", true)
+//                .set("word", keyword)
+//                .build();
+//        PixivClient.getInstance().get(Value.URL_API + "/v2/search/autocomplete", pixivData, new PixivCallback() {
+//            @Override
+//            public void onFailure() {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(String body) {
+//                TagListDTO tagListDTO = gson.fromJson(body, TagListDTO.class);
+//                List<String> tagList = new ArrayList<>();
+//                for (TagDTO tagDTO : tagListDTO.getTagList()) {
+//                    tagList.add(tagDTO.getName());
+//                }
+//                autoCompliteArray.postValue(tagList.toArray(new String[]{}));
+//            }
+//        });
+//    }
 
     public void getHotTags() {
         PixivData pixivData = new PixivData.Builder().set("filter", "for_android").build();
@@ -43,5 +67,9 @@ public class SearchViewModel extends ViewModel {
 
     public MutableLiveData<List<TagDTO>> getHotTagList() {
         return hotTagList;
+    }
+
+    public MutableLiveData<String[]> getAutoCompliteArray() {
+        return autoCompliteArray;
     }
 }

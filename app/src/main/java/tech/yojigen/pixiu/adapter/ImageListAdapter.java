@@ -32,7 +32,7 @@ import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.PixivUtil;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.IllustDTO;
-import tech.yojigen.pixiu.listener.ImageListListener;
+import tech.yojigen.pixiu.listener.ListListener;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
@@ -45,7 +45,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     private List<IllustDTO> illusts;
     private int imageWidth;
     private int column;
-    private ImageListListener imageListListener;
+    private ListListener listListener;
 
     private AtomicBoolean isSharing = new AtomicBoolean(false);
 
@@ -54,8 +54,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
         this.column = column >= 1 ? column : 0;
     }
 
-    public void setListListener(ImageListListener listListener) {
-        this.imageListListener = listListener;
+    public void setListListener(ListListener listListener) {
+        this.listListener = listListener;
     }
 
     @NonNull
@@ -86,8 +86,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                 .transition(withCrossFade(500))
                 .into(holder.image);
         holder.itemView.setOnClickListener(v -> {
-            if (imageListListener != null) {
-                imageListListener.onItemClick(v, illust, position);
+            if (listListener != null) {
+                listListener.onItemClick(v, illust, position);
             }
         });
         holder.itemView.setOnLongClickListener(v -> {
