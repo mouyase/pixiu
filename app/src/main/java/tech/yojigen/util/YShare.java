@@ -21,36 +21,38 @@ import java.util.Random;
  */
 public class YShare {
     public static void image(Bitmap bitmap) {
-        try {
-            String time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.CHINA).format(new Date());
-            String fileName = String.valueOf(YDigest.MD5(time + new Random().nextInt()));
-            String filePath = YUtil.getInstance().getContext().getExternalCacheDir() + "/.YShare/" + fileName + ".png";
-            File file = new File(filePath);
-            File path = new File(YUtil.getInstance().getContext().getExternalCacheDir() + "/.YShare/");
-            if (!path.exists()) {
-                path.mkdir();
+        new Thread(() -> {
+            try {
+                String time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.CHINA).format(new Date());
+                String fileName = String.valueOf(YDigest.MD5(time + new Random().nextInt()));
+                String filePath = YUtil.getInstance().getContext().getExternalCacheDir() + "/.YShare/" + fileName + ".png";
+                File file = new File(filePath);
+                File path = new File(YUtil.getInstance().getContext().getExternalCacheDir() + "/.YShare/");
+                if (!path.exists()) {
+                    path.mkdir();
+                }
+                if (file.exists()) {
+                    file.delete();
+                }
+                file.createNewFile();
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+                Bitmap newBitmap = obscure(bitmap);
+                newBitmap.compress(Bitmap.CompressFormat.PNG, 95, bufferedOutputStream);
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+                Uri uri = FileProvider.getUriForFile(YUtil.getInstance().getContext(), YUtil.getInstance().getPackageName() + ".provider", file);
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                intent.setType("image/*");
+                Intent shareIntent = Intent.createChooser(intent, "分享图片到");
+                shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                YUtil.getInstance().getContext().startActivity(shareIntent);
+            } catch (IOException e) {
+                e.printStackTrace();
+                YXToast.error("图片分享失败");
             }
-            if (file.exists()) {
-                file.delete();
-            }
-            file.createNewFile();
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
-            Bitmap newBitmap = obscure(bitmap);
-            newBitmap.compress(Bitmap.CompressFormat.PNG, 95, bufferedOutputStream);
-            bufferedOutputStream.flush();
-            bufferedOutputStream.close();
-            Uri uri = FileProvider.getUriForFile(YUtil.getInstance().getContext(), YUtil.getInstance().getPackageName() + ".provider", file);
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_STREAM, uri);
-            intent.setType("image/*");
-            Intent shareIntent = Intent.createChooser(intent, "分享图片到");
-            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            YUtil.getInstance().getContext().startActivity(shareIntent);
-        } catch (IOException e) {
-            e.printStackTrace();
-            YXToast.error("图片分享失败");
-        }
+        }).start();
     }
 
     public static void text(String string) {
