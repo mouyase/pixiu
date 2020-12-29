@@ -37,7 +37,7 @@ public class PixiuApplication extends Application {
             Bugly.init(getApplicationContext(), "0b3fb1af22", false);
             XUI.debug(false);
         }
-        Beta.autoCheckUpgrade = false;
+//        Beta.autoCheckUpgrade = true;
 
 //        XHttpSDK.setBaseUrl(SettingSPUtils.getInstance().getApiURL());  //设置网络请求的基础地址
 

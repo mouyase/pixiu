@@ -260,9 +260,7 @@ public class MainActivity extends AppCompatActivity {
                 .title("关于 pixiu v" + Value.APP_VERSION)
                 .content(stringBuilder.toString())
                 .positiveText("确定")
-                .cancelListener(dialog -> {
-                    YSetting.set(Value.SETTING_LAST_VERSION, Value.APP_VERSION);
-                })
                 .show();
+        YSetting.set(Value.SETTING_LAST_VERSION, Value.APP_VERSION);
     }
 }
