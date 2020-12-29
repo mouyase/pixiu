@@ -60,25 +60,27 @@ public class PixivUtil {
             Glide.with(YUtil.getInstance().getContext()).asBitmap().load(illust.getOriginalList().get(0)).into(new CustomTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    String fileName = illust.getId() + ".png";
-                    DocumentFile documentFile = DocumentFile.fromTreeUri(context, Uri.parse(PixiuApplication.getData().getPathUri()));
-                    Uri uri;
-                    if (documentFile.findFile(fileName) == null) {
-                        uri = documentFile.createFile("image/*", fileName).getUri();
-                    } else {
-                        uri = documentFile.findFile(fileName).getUri();
-                    }
-                    try {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                        context.getContentResolver().openOutputStream(uri).write(byteArrayOutputStream.toByteArray());
-                        String pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
-                        pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
-                        YXToast.success("图片保存在: " + pathString + "/" + fileName);
-                    } catch (IOException e) {
-                        YXToast.error("图片保存失败");
-                        e.printStackTrace();
-                    }
+                    new Thread(() -> {
+                        String fileName = illust.getId() + ".png";
+                        DocumentFile documentFile = DocumentFile.fromTreeUri(context, Uri.parse(PixiuApplication.getData().getPathUri()));
+                        Uri uri;
+                        if (documentFile.findFile(fileName) == null) {
+                            uri = documentFile.createFile("image/*", fileName).getUri();
+                        } else {
+                            uri = documentFile.findFile(fileName).getUri();
+                        }
+                        try {
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            context.getContentResolver().openOutputStream(uri).write(byteArrayOutputStream.toByteArray());
+                            String pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
+                            pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
+                            YXToast.success("图片保存在: " + pathString + "/" + fileName);
+                        } catch (IOException e) {
+                            YXToast.error("图片保存失败");
+                            e.printStackTrace();
+                        }
+                    }).start();
                 }
 
                 @Override
@@ -91,7 +93,7 @@ public class PixivUtil {
             for (int i = 0; i < illust.getPageCount(); i++) {
                 pageList.add(String.valueOf(i));
             }
-            MaterialDialog pageDialog = new MaterialDialog.Builder(context)
+            new MaterialDialog.Builder(context)
                     .title("请选择分页")
                     .items(pageList.toArray(new String[]{}))
                     .itemsCallbackMultiChoice(
@@ -107,8 +109,8 @@ public class PixivUtil {
                                     Glide.with(YUtil.getInstance().getContext()).asBitmap().load(illust.getOriginalList().get(i)).into(new CustomTarget<Bitmap>() {
                                         @Override
                                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            synchronized (this) {
-                                                String fileName = illust.getId() + "_" + fileIndex + ".png";
+                                            new Thread(() -> {
+                                                String fileName = illust.getId() + "_p" + fileIndex + ".png";
                                                 DocumentFile documentFile = DocumentFile.fromTreeUri(context, Uri.parse(PixiuApplication.getData().getPathUri()));
                                                 Uri uri;
                                                 if (documentFile.findFile(fileName) == null) {
@@ -127,7 +129,7 @@ public class PixivUtil {
                                                     YXToast.error("图片保存失败");
                                                     e.printStackTrace();
                                                 }
-                                            }
+                                            }).start();
                                         }
 
                                         @Override
