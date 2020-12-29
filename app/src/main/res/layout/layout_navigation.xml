@@ -22,10 +22,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/head"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            app:riv_is_circle="true"
-            app:srcCompat="@mipmap/cover" />
+            app:riv_is_circle="true" />
 
         <TextView
             android:id="@+id/username"

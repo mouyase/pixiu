@@ -3,10 +3,8 @@ package tech.yojigen.pixiu.adapter;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,37 +14,29 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
-import com.xuexiang.xui.widget.toast.XToast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import tech.yojigen.pixiu.R;
-import tech.yojigen.pixiu.app.PixiuApplication;
-import tech.yojigen.pixiu.app.Util;
+import tech.yojigen.pixiu.app.PixivUtil;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.listener.ImageListListener;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
-import tech.yojigen.pixiu.view.SettingActivity;
 import tech.yojigen.util.YShare;
-import tech.yojigen.util.YToast;
 import tech.yojigen.util.YXToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -164,7 +154,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                         });
                     } else if (text.equals("复制ID")) {
                         ClipboardManager clipboardManager = (ClipboardManager) itemView.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData mClipData = ClipData.newPlainText("Pixiu", illust.getId());
+                        ClipData mClipData = ClipData.newPlainText("PixiuID", illust.getId());
                         clipboardManager.setPrimaryClip(mClipData);
                     } else if (text.equals("分享链接")) {
                         Document document = Jsoup.parse(illust.getCaption());
@@ -202,10 +192,10 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
                             }
                         });
                     } else if (text.equals("保存原图")) {
-                        Util.saveImage(holder.itemView.getContext(), illust);
+                        PixivUtil.saveImage(holder.itemView.getContext(), illust);
                     }
                 })
-                .build().show();
+                .show();
     }
 
     @Override

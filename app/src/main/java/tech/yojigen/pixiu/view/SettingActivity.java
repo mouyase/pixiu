@@ -74,7 +74,7 @@ public class SettingActivity extends AppCompatActivity {
                                 modeSelect.setDetailText("普通模式");
                             }
                         })
-                        .build().show())
+                        .show())
                 .addTo(viewBinding.groupListView);
 
         pathSelect = viewBinding.groupListView.createItemView("选择图片保存目录");
@@ -96,6 +96,20 @@ public class SettingActivity extends AppCompatActivity {
                     startActivityForResult(intent, PATH_REQUEST_CODE);
                 })
                 .addTo(viewBinding.groupListView);
+
+        XUICommonListItemView safeMode = viewBinding.groupListView.createItemView("青少年模式");
+        safeMode.setOrientation(XUICommonListItemView.VERTICAL);
+        safeMode.setDetailText("此功能仅为本地使用，不影响网页端设置");
+        safeMode.setAccessoryType(XUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        safeMode.getSwitch().setOnCheckedChangeListener((v, isChecked) -> {
+            YSetting.set(Value.SETTING_SAFE_MODE, isChecked);
+            PixiuApplication.getData().setSafeMode(isChecked);
+        });
+        XUIGroupListView.newSection(this)
+                .setTitle("浏览设置")
+                .addItemView(safeMode, v -> {
+                })
+                .addTo(viewBinding.groupListView);
     }
 
     @Override
@@ -103,15 +117,17 @@ public class SettingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null || resultCode != Activity.RESULT_OK) return;
         if (requestCode == PATH_REQUEST_CODE) {
-            YSetting.set(Value.SETTING_PATH_URL, String.valueOf(data.getData()));
-            PixiuApplication.getData().setPathUri(String.valueOf(data.getData()));
-            try {
-                pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
-                pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            if (data.getData() != null) {
+                YSetting.set(Value.SETTING_PATH_URL, String.valueOf(data.getData()));
+                PixiuApplication.getData().setPathUri(String.valueOf(data.getData()));
+                try {
+                    pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
+                    pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                pathSelect.setDetailText(pathString);
             }
-            pathSelect.setDetailText(pathString);
         }
     }
 }

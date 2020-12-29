@@ -1,6 +1,10 @@
 package tech.yojigen.pixiu.view;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,16 +25,23 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
+import com.tencent.bugly.beta.Beta;
 import com.xuexiang.xui.utils.StatusBarUtils;
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
+import moe.feng.alipay.zerosdk.AlipayZeroSdk;
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
 import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
+import tech.yojigen.util.YXToast;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -83,6 +95,21 @@ public class MainActivity extends AppCompatActivity {
         TextView username = viewBinding.navigation.getHeaderView(0).findViewById(R.id.username);
         username.setText(PixiuApplication.getData().getUser().getName());
         username.setTextSize(18);
+        RadiusImageView head = viewBinding.navigation.getHeaderView(0).findViewById(R.id.head);
+        Glide.with(this)
+                .load(PixiuApplication.getData().getUser().getHeadImage())
+                .transition(withCrossFade(500))
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        head.setImageDrawable(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 
     private final PagerAdapter mPagerAdapter = new PagerAdapter() {
@@ -188,6 +215,28 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.menu_setting:
                     Intent intent = new Intent(this, SettingActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.menu_check_update:
+                    Beta.checkUpgrade(true, false);
+                    break;
+                case R.id.menu_alipay:
+                    new MaterialDialog.Builder(this)
+                            .title("是否捐赠开发者")
+                            .content("捐赠所得将用于内置代理服务器及客户端后续研发")
+                            .positiveText("捐赠")
+                            .negativeText("溜了溜了")
+                            .onPositive((dialog, which) -> {
+                                if (AlipayZeroSdk.hasInstalledAlipayClient(this)) {
+                                    AlipayZeroSdk.startAlipayClient(this, "FKX02629C6PJOR6THSDV2E");
+                                } else {
+                                    String account = "mouyase@qq.com";
+                                    ClipboardManager cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                    ClipData data = ClipData.newPlainText("account", account);
+                                    cb.setPrimaryClip(data);
+                                    YXToast.info(account + " 已复制到剪贴板(支付宝)");
+                                }
+                            })
+                            .show();
                     break;
                 default:
                     break;

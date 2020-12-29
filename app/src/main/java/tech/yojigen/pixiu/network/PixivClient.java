@@ -32,7 +32,6 @@ import tech.yojigen.pixiu.network.fuckgfw.PixivTrustManager;
 import tech.yojigen.pixiu.view.LoginActivity;
 import tech.yojigen.util.YDigest;
 import tech.yojigen.util.YSetting;
-import tech.yojigen.util.YToast;
 import tech.yojigen.util.YUtil;
 import tech.yojigen.util.YXToast;
 
@@ -75,6 +74,12 @@ public class PixivClient {
                 return chain.proceed(request);
             }
             if (request.url().toString().contains(Value.URL_OAUTH)) {
+                return chain.proceed(request);
+            }
+            if (request.url().toString().contains(Value.URL_ACCOUNT)) {
+                request = chain.request().newBuilder()
+                        .header("Authorization", "Bearer l-f9qZ0ZyqSwRyZs8-MymbtWBbSxmCu1pmbOlyisou8")
+                        .build();
                 return chain.proceed(request);
             }
             String accessToken = PixiuApplication.getData().getAccessToken();

@@ -34,6 +34,14 @@ public class IllustDTO {
     private List<MetaPage> metaPages;
     @SerializedName("tags")
     private List<TagDTO> tags;
+    @SerializedName("sanity_level")
+    private int level;
+    @SerializedName("total_view")
+    private int totalView;
+    @SerializedName("total_bookmarks")
+    private int totalBookmarks;
+    @SerializedName("is_muted")
+    private boolean isMuted;
 
     public class MetaSinglePage {
         @SerializedName("original_image_url")
@@ -134,6 +142,38 @@ public class IllustDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getTotalView() {
+        return totalView;
+    }
+
+    public void setTotalView(int totalView) {
+        this.totalView = totalView;
+    }
+
+    public int getTotalBookmarks() {
+        return totalBookmarks;
+    }
+
+    public void setTotalBookmarks(int totalBookmarks) {
+        this.totalBookmarks = totalBookmarks;
+    }
+
+    public boolean isMuted() {
+        return isMuted;
+    }
+
+    public void setMuted(boolean muted) {
+        isMuted = muted;
     }
 
     public String getCaption() {
@@ -243,5 +283,9 @@ public class IllustDTO {
             }
         }
         return urlList;
+    }
+
+    public boolean isUgoira() {
+        return type.equals("ugoira");
     }
 }

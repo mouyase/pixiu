@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import tech.yojigen.pixiu.app.PixivUtil;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
@@ -127,11 +128,11 @@ public class SearchResultViewModel extends ViewModel {
                 @Override
                 public void onResponse(String body) {
                     IllustListDTO illustListDTO = gson.fromJson(body, IllustListDTO.class);
-                    illustListList.get(index).getValue().addAll(illustListDTO.getIllustList());
+                    illustListList.get(index).getValue().addAll(PixivUtil.filter(illustListDTO.getIllustList()));
                     illustListList.get(index).postValue(illustListList.get(index).getValue());
                     isLoadingList.set(index, false);
                     nextTimesList.set(index, nextTimesList.get(index) + 1);
-                    if (illustListList.get(index).getValue().size() < 30) {
+                    if (illustListDTO.getIllustList().size() < 0) {
                         getData(index);
                     }
                 }

@@ -7,13 +7,10 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.xuexiang.xui.utils.StatusBarUtils;
-import com.xuexiang.xui.widget.toast.XToast;
 
 import java.util.ArrayList;
 import java.util.List;

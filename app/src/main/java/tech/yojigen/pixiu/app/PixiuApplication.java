@@ -58,6 +58,7 @@ public class PixiuApplication extends Application {
         data.setFavouriteMap(new HashMap<>());
         data.setPathUri(YSetting.get(Value.SETTING_PATH_URL, ""));
         data.setNetworkMode(YSetting.get(Value.SETTING_NETWORK_MODE, PixivClient.MODE_NO_SNI));
+        data.setSafeMode(YSetting.get(Value.SETTING_SAFE_MODE, true));
     }
 
     public static Data getData() {

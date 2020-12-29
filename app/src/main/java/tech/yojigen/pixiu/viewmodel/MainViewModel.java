@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import tech.yojigen.pixiu.app.PixivUtil;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
@@ -74,7 +75,7 @@ public class MainViewModel extends ViewModel {
                         }
                     }
                     recommendNextUrl = recommendDTO.getNextUrl();
-                    recommendList.getValue().addAll(newList);
+                    recommendList.getValue().addAll(PixivUtil.filter(newList));
                     recommendList.postValue(recommendList.getValue());
                     isRecommendLoading = false;
                 }
@@ -137,7 +138,7 @@ public class MainViewModel extends ViewModel {
                         }
                     }
                     followedNextUrl = illustListDTO.getNextUrl();
-                    followedList.getValue().addAll(newList);
+                    followedList.getValue().addAll(PixivUtil.filter(newList));
                     followedList.postValue(followedList.getValue());
                     isFollowedLoading = false;
                 }

@@ -15,19 +15,38 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
-import com.xuexiang.xui.widget.toast.XToast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.view.SettingActivity;
 import tech.yojigen.util.YUtil;
 import tech.yojigen.util.YXToast;
 
-public class Util {
+public class PixivUtil {
+    public static List<IllustDTO> filter(List<IllustDTO> originList) {
+        List<IllustDTO> illustDTOS = new ArrayList<>();
+        for (IllustDTO illust : originList) {
+            if (illust.isMuted()) {
+                continue;
+            }
+            if (illust.isUgoira()) {
+                continue;
+            }
+            if (PixiuApplication.getData().isSafeMode()) {
+                if (illust.getLevel() > 2) {
+                    continue;
+                }
+            }
+            illustDTOS.add(illust);
+        }
+        return illustDTOS;
+    }
+
     public static void saveImage(Context context, IllustDTO illust) {
         if (TextUtils.isEmpty(PixiuApplication.getData().getPathUri())) {
             Intent intent = new Intent(context, SettingActivity.class);
@@ -45,7 +64,7 @@ public class Util {
                     DocumentFile documentFile = DocumentFile.fromTreeUri(context, Uri.parse(PixiuApplication.getData().getPathUri()));
                     Uri uri;
                     if (documentFile.findFile(fileName) == null) {
-                        uri = documentFile.createFile("image/*", illust.getId() + ".png").getUri();
+                        uri = documentFile.createFile("image/*", fileName).getUri();
                     } else {
                         uri = documentFile.findFile(fileName).getUri();
                     }
@@ -55,8 +74,9 @@ public class Util {
                         context.getContentResolver().openOutputStream(uri).write(byteArrayOutputStream.toByteArray());
                         String pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
                         pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
-                        XToast.success(context, "图片保存在: " + pathString + "/" + illust.getId() + ".png").show();
+                        YXToast.success("图片保存在: " + pathString + "/" + fileName);
                     } catch (IOException e) {
+                        YXToast.error("图片保存失败");
                         e.printStackTrace();
                     }
                 }
@@ -102,8 +122,9 @@ public class Util {
                                                     context.getContentResolver().openOutputStream(uri).write(byteArrayOutputStream.toByteArray());
                                                     String pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");
                                                     pathString = pathString.replace("content://com.android.externalstorage.documents/tree/primary:", "");
-                                                    XToast.success(context, "图片保存在: " + pathString + "/" + fileName).show();
+                                                    YXToast.success("图片保存在: " + pathString + "/" + fileName);
                                                 } catch (IOException e) {
+                                                    YXToast.error("图片保存失败");
                                                     e.printStackTrace();
                                                 }
                                             }
@@ -119,8 +140,7 @@ public class Util {
                             })
                     .positiveText("保存")
                     .negativeText("取消")
-                    .build();
-            pageDialog.show();
+                    .show();
         }
     }
 }

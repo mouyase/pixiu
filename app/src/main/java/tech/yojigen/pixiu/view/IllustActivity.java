@@ -29,13 +29,14 @@ import com.google.gson.Gson;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.PixiuApplication;
-import tech.yojigen.pixiu.app.Util;
+import tech.yojigen.pixiu.app.PixivUtil;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityIllustBinding;
 import tech.yojigen.pixiu.dto.BundleIllustDTO;
@@ -94,6 +95,7 @@ public class IllustActivity extends AppCompatActivity {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
         });
+        viewBinding.titleBar.setLeftClickListener(v -> ActivityCompat.finishAfterTransition(this));
     }
 
     private void initView() {
@@ -120,9 +122,6 @@ public class IllustActivity extends AppCompatActivity {
         }
         pagerMarginParams.setMargins(0, StatusBarUtils.getStatusBarHeight(this), 0, 0);
         viewBinding.viewPager.setLayoutParams(pagerMarginParams);
-
-        viewBinding.titleBar.setLeftClickListener(v -> ActivityCompat.finishAfterTransition(this));
-
 
         viewBinding.viewPager.setAdapter(viewPagerAdapter);
 //        viewBinding.viewPager.setOffscreenPageLimit(-1);
@@ -213,7 +212,7 @@ public class IllustActivity extends AppCompatActivity {
                     .load(illust.getImageUrls().getMedium())
                     .transition(withCrossFade(500))
                     .into(holder.image);
-            holder.save.setOnClickListener(v -> Util.saveImage(holder.itemView.getContext(), illust));
+            holder.save.setOnClickListener(v -> PixivUtil.saveImage(holder.itemView.getContext(), illust));
             holder.resend.setOnClickListener(v -> {
                 if (!isSharing.get()) {
                     isSharing.set(true);
@@ -310,7 +309,8 @@ public class IllustActivity extends AppCompatActivity {
         }
 
         class ViewPagerViewHolder extends RecyclerView.ViewHolder {
-            ImageView image, head, resend, save;
+            ImageView image, resend, save;
+            RadiusImageView head;
             TextView count, title, artist, at;
             ConstraintLayout info;
             ShineButton like;

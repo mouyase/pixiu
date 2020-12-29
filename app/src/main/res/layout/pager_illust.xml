@@ -141,7 +141,7 @@
                     android:id="@+id/like"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    app:sb_checked_color="#FF3333"
+                    app:sb_checked_color="#F22"
                     app:sb_icon_image="@drawable/ic_heart"
                     app:sb_normal_color="#FFF" />
             </LinearLayout>

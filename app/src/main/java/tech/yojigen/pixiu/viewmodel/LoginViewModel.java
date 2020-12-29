@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import tech.yojigen.android.SingleLiveEvent;
 import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
+import tech.yojigen.pixiu.dto.CreateAccountDTO;
 import tech.yojigen.pixiu.dto.UserAccountDTO;
 import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
@@ -17,9 +18,10 @@ public class LoginViewModel extends ViewModel {
     private final Gson gson = new Gson();
     private final SingleLiveEvent onLoginSuccess = new SingleLiveEvent<>();
     private final SingleLiveEvent onLoginFailed = new SingleLiveEvent<>();
+    private final SingleLiveEvent onRegistFailed = new SingleLiveEvent<>();
 
     public void login(String username, String password) {
-        username = username.trim().toLowerCase();
+        username = username.trim();
         PixivData pixivData = new PixivData.Builder()
                 .set("username", username)
                 .set("password", password)
@@ -50,7 +52,36 @@ public class LoginViewModel extends ViewModel {
         });
     }
 
+    public void regist(String username) {
+        username = username.trim();
+//        PixiuApplication.getData().setAccessToken("l-f9qZ0ZyqSwRyZs8-MymbtWBbSxmCu1pmbOlyisou8");
+        PixivData pixivData = new PixivData.Builder()
+                .set("user_name", username)
+                .set("ref", "pixiv_android_app_provisional_account")
+                .build();
+        PixivClient.getInstance().post(Value.URL_ACCOUNT, pixivData, new PixivCallback() {
+            @Override
+            public void onFailure() {
+                onRegistFailed.postValue();
+            }
+
+            @Override
+            public void onResponse(String body) {
+                CreateAccountDTO createAccountDTO = gson.fromJson(body, CreateAccountDTO.class);
+                login(createAccountDTO.getUserData().getUsername(), createAccountDTO.getUserData().getPassword());
+            }
+        });
+    }
+
     public SingleLiveEvent getOnLoginSuccess() {
         return onLoginSuccess;
+    }
+
+    public SingleLiveEvent getOnLoginFailed() {
+        return onLoginFailed;
+    }
+
+    public SingleLiveEvent getOnRegistFailed() {
+        return onRegistFailed;
     }
 }

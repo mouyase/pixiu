@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import tech.yojigen.pixiu.app.PixivUtil;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
@@ -150,11 +151,11 @@ public class IllustViewModel extends ViewModel {
                         @Override
                         public void onResponse(String body) {
                             IllustListDTO illustListDTO = gson.fromJson(body, IllustListDTO.class);
-                            illustList.getValue().addAll(illustListDTO.getIllustList());
+                            illustList.getValue().addAll(PixivUtil.filter(illustListDTO.getIllustList()));
                             illustList.postValue(illustList.getValue());
                             isLoading = false;
                             nextTimes = nextTimes + 1;
-                            if (illustList.getValue().size() < 30) {
+                            if (illustListDTO.getIllustList().size() == 0) {
                                 getMoreData();
                             }
                         }

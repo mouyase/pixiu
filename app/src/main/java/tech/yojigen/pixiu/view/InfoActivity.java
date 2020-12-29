@@ -1,16 +1,16 @@
 package tech.yojigen.pixiu.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.text.HtmlCompat;
 
 import com.bumptech.glide.Glide;
@@ -20,9 +20,11 @@ import com.google.gson.Gson;
 import com.xuexiang.xui.widget.button.ButtonView;
 
 import java.text.Collator;
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.Value;
@@ -47,11 +49,23 @@ public class InfoActivity extends AppCompatActivity {
         initView();
     }
 
+    @SuppressLint("SimpleDateFormat")
+//    2020年12月21日早上6点48分
+    private SimpleDateFormat viewDateFormat = new SimpleDateFormat("yyyy年MM月dd日hh点mm分", Locale.CHINA);
+    private SimpleDateFormat reFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.JAPAN);
+
     protected void initView() {
-        viewBinding.titleBar.setLeftClickListener(v -> finish());
+        viewBinding.titleBar.setLeftClickListener(v -> ActivityCompat.finishAfterTransition(this));
         viewBinding.title.setText(illust.getTitle());
         viewBinding.artist.setText(illust.getUser().getName());
         viewBinding.artistAccount.setText(illust.getUser().getAccount());
+        viewBinding.countLike.setText(String.valueOf(illust.getTotalBookmarks()));
+        viewBinding.countView.setText(String.valueOf(illust.getTotalView()));
+        try {
+            viewBinding.date.setText(viewDateFormat.format(reFormatter.parse(illust.getCreateTime())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         viewBinding.caption.setText(HtmlCompat.fromHtml(illust.getCaption(), FROM_HTML_MODE_LEGACY));
         Comparator<TagDTO> comparator = (o1, o2) -> {
             Collator collator = Collator.getInstance();

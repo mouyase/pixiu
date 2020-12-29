@@ -15,6 +15,15 @@ public class Data {
     private Map<String, Boolean> favouriteMap = new HashMap<>();
     private String pathUri;
     private int networkMode;
+    private boolean isSafeMode;
+
+    public boolean isSafeMode() {
+        return isSafeMode;
+    }
+
+    public void setSafeMode(boolean safeMode) {
+        isSafeMode = safeMode;
+    }
 
     public String getPathUri() {
         return pathUri;
