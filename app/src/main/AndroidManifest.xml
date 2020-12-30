@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.yojigen.pixiu">
 
+    <queries>
+        <package android:name="com.eg.android.AlipayGphone" />
+    </queries>
+
     <application
         android:name=".app.PixiuApplication"
         android:allowBackup="true"
@@ -12,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pixiu">
-        <activity android:name=".view.SettingActivity"></activity>
+        <activity android:name=".view.SettingActivity" />
         <activity android:name=".view.InfoActivity" />
         <activity android:name=".view.IllustActivity" />
         <activity android:name=".view.SearchResultActivity" />

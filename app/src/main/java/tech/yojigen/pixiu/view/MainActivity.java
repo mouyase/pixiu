@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                                     ClipboardManager cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                     ClipData data = ClipData.newPlainText("account", account);
                                     cb.setPrimaryClip(data);
-                                    YXToast.info(account + " 已复制到剪贴板(支付宝)");
+                                    YXToast.info("无法启动支付宝\n支付宝账号" + account + "\n已复制到剪贴板");
                                 }
                             })
                             .show();

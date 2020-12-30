@@ -61,7 +61,7 @@ public class PixivUtil {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                     new Thread(() -> {
-                        String fileName = illust.getId() + ".png";
+                        String fileName = illust.getId() + "_p0.png";
                         DocumentFile documentFile = DocumentFile.fromTreeUri(context, Uri.parse(PixiuApplication.getData().getPathUri()));
                         Uri uri;
                         if (documentFile.findFile(fileName) == null) {
