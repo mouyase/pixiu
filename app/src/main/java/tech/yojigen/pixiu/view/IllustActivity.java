@@ -25,7 +25,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.gson.Gson;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
@@ -45,6 +44,7 @@ import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
 import tech.yojigen.pixiu.viewmodel.IllustViewModel;
+import tech.yojigen.util.YBundle;
 import tech.yojigen.util.YShare;
 import tech.yojigen.util.YXToast;
 
@@ -64,7 +64,7 @@ public class IllustActivity extends AppCompatActivity {
         viewBinding = ActivityIllustBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
-        bundleIllustDTO = BundleIllustDTO.fromJson(getIntent().getStringExtra(Value.BUNDLE_ILLUST_LIST));
+        bundleIllustDTO = YBundle.get(getIntent());
 
         initViewModel();
         initView();
@@ -291,13 +291,12 @@ public class IllustActivity extends AppCompatActivity {
                 return true;
             });
             holder.info.setOnClickListener(v -> {
-                Gson gson = new Gson();
                 Intent intent = new Intent(IllustActivity.this, InfoActivity.class);
                 Pair<View, String> title = new Pair<>(holder.title, ViewCompat.getTransitionName(holder.title));
                 Pair<View, String> head = new Pair<>(holder.head, ViewCompat.getTransitionName(holder.head));
                 Pair<View, String> at = new Pair<>(holder.at, ViewCompat.getTransitionName(holder.at));
                 Pair<View, String> artist = new Pair<>(holder.artist, ViewCompat.getTransitionName(holder.artist));
-                intent.putExtra(Value.BUNDLE_ILLUST, gson.toJson(illust));
+                YBundle.set(intent, illust);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(IllustActivity.this, title, head, at, artist);
                 ActivityCompat.startActivity(IllustActivity.this, intent, options.toBundle());
             });

@@ -93,22 +93,22 @@ public class MainViewModel extends ViewModel {
         return recommendList;
     }
 
-    public String getRecommendBundle(int position) {
+    public BundleIllustDTO getRecommendBundle(int position) {
         BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
         bundleIllustDTO.setPosition(position);
         bundleIllustDTO.setNextUrl(recommendNextUrl);
         bundleIllustDTO.setIllustList(getRecommendList().getValue());
         bundleIllustDTO.setMode(BundleIllustDTO.MODE_NORMAL);
-        return bundleIllustDTO.toJson();
+        return bundleIllustDTO;
     }
 
-    public String getFollowBundle(int position) {
+    public BundleIllustDTO getFollowBundle(int position) {
         BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
         bundleIllustDTO.setPosition(position);
         bundleIllustDTO.setNextUrl(followedNextUrl);
         bundleIllustDTO.setIllustList(getFollowedList().getValue());
         bundleIllustDTO.setMode(BundleIllustDTO.MODE_NORMAL);
-        return bundleIllustDTO.toJson();
+        return bundleIllustDTO;
     }
 
     public void getFollowedData() {

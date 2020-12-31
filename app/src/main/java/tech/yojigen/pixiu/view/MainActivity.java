@@ -41,6 +41,7 @@ import tech.yojigen.pixiu.app.PixiuApplication;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityMainBinding;
 import tech.yojigen.pixiu.viewmodel.MainViewModel;
+import tech.yojigen.util.YBundle;
 import tech.yojigen.util.YSetting;
 import tech.yojigen.util.YXToast;
 
@@ -191,9 +192,9 @@ public class MainActivity extends AppCompatActivity {
             imageListAdapter.setListListener((v, illust, p) -> {
                 Intent intent = new Intent(MainActivity.this, IllustActivity.class);
                 if (position == 0) {
-                    intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getRecommendBundle(p));
+                    YBundle.set(intent,viewModel.getRecommendBundle(p));
                 } else {
-                    intent.putExtra(Value.BUNDLE_ILLUST_LIST, viewModel.getFollowBundle(p));
+                    YBundle.set(intent,viewModel.getFollowBundle(p));
                 }
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, v, illust.getId());
                 ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());

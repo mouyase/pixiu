@@ -22,6 +22,7 @@ import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.TagDTO;
 import tech.yojigen.pixiu.view.IllustActivity;
 import tech.yojigen.pixiu.view.SearchResultActivity;
+import tech.yojigen.util.YBundle;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -70,7 +71,7 @@ public class HotTagListAdapter extends RecyclerView.Adapter<HotTagListAdapter.Vi
                 .into(holder.image);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), SearchResultActivity.class);
-            intent.putExtra(Value.BUNDLE_KEY_SEARCH, tagDTO.getTag());
+            YBundle.set(intent,tagDTO.getTag());
             v.getContext().startActivity(intent);
         });
         holder.itemView.setOnLongClickListener(v -> {
@@ -81,7 +82,7 @@ public class HotTagListAdapter extends RecyclerView.Adapter<HotTagListAdapter.Vi
             bundleIllustDTO.setPosition(0);
             bundleIllustDTO.setIllustList(illustDTOList);
             bundleIllustDTO.setMode(BundleIllustDTO.MODE_SINGLE);
-            intent.putExtra(Value.BUNDLE_ILLUST_LIST, bundleIllustDTO.toJson());
+            YBundle.set(intent, bundleIllustDTO);
             v.getContext().startActivity(intent);
             return true;
         });

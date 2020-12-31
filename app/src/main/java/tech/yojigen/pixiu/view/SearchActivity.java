@@ -17,6 +17,7 @@ import tech.yojigen.pixiu.adapter.HotTagListAdapter;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivitySearchBinding;
 import tech.yojigen.pixiu.viewmodel.SearchViewModel;
+import tech.yojigen.util.YBundle;
 
 public class SearchActivity extends AppCompatActivity {
     private SearchViewModel viewModel;
@@ -55,7 +56,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-                intent.putExtra(Value.BUNDLE_KEY_SEARCH, query);
+                YBundle.set(intent,query);
+
                 startActivity(intent);
                 return false;
             }

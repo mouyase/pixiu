@@ -28,6 +28,7 @@ import tech.yojigen.pixiu.network.PixivCallback;
 import tech.yojigen.pixiu.network.PixivClient;
 import tech.yojigen.pixiu.network.PixivData;
 import tech.yojigen.pixiu.viewmodel.RouterViewModel;
+import tech.yojigen.util.YBundle;
 import tech.yojigen.util.YXToast;
 
 public class RouterActivity extends AppCompatActivity {
@@ -83,7 +84,7 @@ public class RouterActivity extends AppCompatActivity {
                             bundleIllustDTO.setIllustList(illustDTOList);
                             bundleIllustDTO.setMode(BundleIllustDTO.MODE_SINGLE);
                             Intent intent = new Intent(RouterActivity.this, IllustActivity.class);
-                            intent.putExtra(Value.BUNDLE_ILLUST_LIST, bundleIllustDTO.toJson());
+                            YBundle.set(intent,bundleIllustDTO);
                             startActivity(intent);
                             finish();
                         }

@@ -6,6 +6,7 @@ import android.net.SSLCertificateSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSession;
@@ -21,27 +22,6 @@ public class PixivSSLSocketFactory extends SSLSocketFactory {
     public static PixivSSLSocketFactory getInstance() {
         return mPixivSSLSocketFactory;
     }
-
-
-    public Socket createSocket(String paramString, int paramInt) {
-        return null;
-    }
-
-
-    public Socket createSocket(String paramString, int paramInt1, InetAddress paramInetAddress, int paramInt2) {
-        return null;
-    }
-
-
-    public Socket createSocket(InetAddress paramInetAddress, int paramInt) {
-        return null;
-    }
-
-
-    public Socket createSocket(InetAddress paramInetAddress1, int paramInt1, InetAddress paramInetAddress2, int paramInt2) {
-        return null;
-    }
-
 
     public Socket createSocket(Socket paramSocket, String paramString, int paramInt, boolean paramBoolean) throws IOException {
         if (paramSocket == null)
@@ -71,12 +51,32 @@ public class PixivSSLSocketFactory extends SSLSocketFactory {
         throw new TypeCastException("null cannot be cast to non-null type android.net.SSLCertificateSocketFactory");
     }
 
+    @Override
+    public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
+        return null;
+    }
 
+    @Override
+    public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException, UnknownHostException {
+        return null;
+    }
+
+    @Override
+    public Socket createSocket(InetAddress host, int port) throws IOException {
+        return null;
+    }
+
+    @Override
+    public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
+        return null;
+    }
+
+    @Override
     public String[] getDefaultCipherSuites() {
         return new String[0];
     }
 
-
+    @Override
     public String[] getSupportedCipherSuites() {
         return new String[0];
     }

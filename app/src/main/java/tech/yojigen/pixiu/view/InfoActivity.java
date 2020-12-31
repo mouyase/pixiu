@@ -31,6 +31,7 @@ import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityInfoBinding;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.TagDTO;
+import tech.yojigen.util.YBundle;
 
 import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -43,7 +44,7 @@ public class InfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        illust = gson.fromJson(getIntent().getStringExtra(Value.BUNDLE_ILLUST), IllustDTO.class);
+        illust = YBundle.get(getIntent());
         viewBinding = ActivityInfoBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         initView();
@@ -99,7 +100,7 @@ public class InfoActivity extends AppCompatActivity {
             buttonView.setText(tagName);
             buttonView.setOnClickListener(v -> {
                 Intent intent = new Intent(this, SearchResultActivity.class);
-                intent.putExtra(Value.BUNDLE_KEY_SEARCH, searchKey);
+                YBundle.set(intent,searchKey);
                 startActivity(intent);
             });
             viewBinding.tagsFlowLayout.addView(view);

@@ -153,7 +153,7 @@ public class SearchResultViewModel extends ViewModel {
         return illustListList;
     }
 
-    public String getBundle(int index, int position) {
+    public BundleIllustDTO getBundle(int index, int position) {
         BundleIllustDTO bundleIllustDTO = new BundleIllustDTO();
         bundleIllustDTO.setPosition(position);
         bundleIllustDTO.setNextTimes(nextTimesList.get(index));
@@ -161,6 +161,6 @@ public class SearchResultViewModel extends ViewModel {
         bundleIllustDTO.setSearchKey(searchKey);
         bundleIllustDTO.setIllustList(illustListList.get(index).getValue());
         bundleIllustDTO.setMode(BundleIllustDTO.MODE_SEARCH);
-        return bundleIllustDTO.toJson();
+        return bundleIllustDTO;
     }
 }

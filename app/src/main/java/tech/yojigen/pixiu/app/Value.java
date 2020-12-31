@@ -17,10 +17,6 @@ public class Value {
     public static final String SETTING_SAFE_MODE = "SETTING_SAFE_MODE";
     public static final String SETTING_LAST_VERSION = "SETTING_LAST_VERSION";
 
-    public static final String BUNDLE_KEY_SEARCH = "BUNDLE_KEY_SEARCH";
-    public static final String BUNDLE_ILLUST_LIST = "BUNDLE_ILLUST_LIST";
-    public static final String BUNDLE_ILLUST = "BUNDLE_ILLUST";
-
     public static final String PIXIV_APP_VERSION = "5.0.250";
     public static final String PIXIV_ACCEPT_LANGUAGE = "zh_CN";
     public static final String PIXIV_APP_OS = "Android";

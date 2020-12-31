@@ -72,14 +72,4 @@ public class BundleIllustDTO {
     public void setIllustList(List<IllustDTO> illustList) {
         this.illustList = illustList;
     }
-
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
-
-    public static BundleIllustDTO fromJson(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, BundleIllustDTO.class);
-    }
 }
