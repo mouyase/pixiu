@@ -92,7 +92,8 @@ public class SettingActivity extends AppCompatActivity {
                 .setTitle("文件设置")
                 .addItemView(pathSelect, v -> {
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+//                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                    intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
                     startActivityForResult(intent, PATH_REQUEST_CODE);
                 })
                 .addTo(viewBinding.groupListView);
@@ -119,7 +120,8 @@ public class SettingActivity extends AppCompatActivity {
         if (data == null || resultCode != Activity.RESULT_OK) return;
         if (requestCode == PATH_REQUEST_CODE) {
             if (data.getData() != null) {
-                YSetting.set(Value.SETTING_PATH_URL, String.valueOf(data.getData()));
+                getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                YSetting.set(Value.SETTING_PATH_URI, String.valueOf(data.getData()));
                 PixiuApplication.getData().setPathUri(String.valueOf(data.getData()));
                 try {
                     pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");

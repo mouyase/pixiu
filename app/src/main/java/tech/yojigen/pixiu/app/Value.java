@@ -13,7 +13,7 @@ public class Value {
     public static final String SETTING_PASSWORD = "password";
     public static final String SETTING_ACCOUNT = "SETTING_ACCOUNT";
     public static final String SETTING_NETWORK_MODE = "SETTING_NETWORK_MODE";
-    public static final String SETTING_PATH_URL = "SETTING_PATH_URL";
+    public static final String SETTING_PATH_URI = "SETTING_PATH_URI";
     public static final String SETTING_SAFE_MODE = "SETTING_SAFE_MODE";
     public static final String SETTING_LAST_VERSION = "SETTING_LAST_VERSION";
 

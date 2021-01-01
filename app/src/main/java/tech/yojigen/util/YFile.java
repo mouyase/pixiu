@@ -3,8 +3,6 @@ package tech.yojigen.util;
 import android.app.Activity;
 import android.content.Intent;
 
-import tech.yojigen.pixiu.app.Value;
-
 public class YFile {
     public static final int PATH_REQUEST_CODE = 0x1000;
 
@@ -14,9 +12,12 @@ public class YFile {
         activity.startActivityForResult(intent, PATH_REQUEST_CODE);
     }
 
-    public static void onActivityResult(int requestCode, Intent data) {
+    public static void onActivityResult(Activity activity, int requestCode, Intent data) {
         if (requestCode == PATH_REQUEST_CODE) {
-            YSetting.set(Value.SETTING_PATH_URL, String.valueOf(data.getData()));
+            if (data.getData() != null) {
+                activity.getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+//            YSetting.set(Value.SETTING_PATH_URI, String.valueOf(data.getData()));
 //            PixiuApplication.getData().setPathUri(String.valueOf(data.getData()));
 //            try {
 //                pathString = URLDecoder.decode(String.valueOf(PixiuApplication.getData().getPathUri()), "UTF-8");

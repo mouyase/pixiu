@@ -1,11 +1,13 @@
 package tech.yojigen.pixiu.app;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
 import com.xuexiang.xui.XUI;
 
 import java.util.HashMap;
@@ -56,7 +58,12 @@ public class PixiuApplication extends Application {
             data.setUser(userAccountDTO.getUser());
         }
         data.setFavouriteMap(new HashMap<>());
-        data.setPathUri(YSetting.get(Value.SETTING_PATH_URL, ""));
+        data.setPathUri(YSetting.get(Value.SETTING_PATH_URI, ""));
+//        if (!TextUtils.isEmpty(data.getPathUri())) {
+//            getContentResolver().takePersistableUriPermission(Uri.parse(data.getPathUri()),
+//                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//        }
         data.setNetworkMode(YSetting.get(Value.SETTING_NETWORK_MODE, PixivClient.MODE_NO_SNI));
         data.setSafeMode(YSetting.get(Value.SETTING_SAFE_MODE, true));
     }
