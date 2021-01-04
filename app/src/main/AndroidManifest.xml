@@ -16,6 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pixiu">
+        <receiver android:name=".widget.PixiuWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pixiu_widget_info" />
+        </receiver>
+
         <activity android:name=".view.SettingActivity" />
         <activity android:name=".view.InfoActivity" />
         <activity android:name=".view.IllustActivity" />
@@ -42,6 +52,7 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:scheme="pixiu" />
                 <data android:host="pixiv.me" />
                 <data android:host="pixiv.net" />
                 <data android:host="www.pixiv.me" />

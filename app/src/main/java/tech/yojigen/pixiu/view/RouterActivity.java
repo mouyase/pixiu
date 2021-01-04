@@ -59,7 +59,7 @@ public class RouterActivity extends AppCompatActivity {
             }, 1000);
         } else {
             System.out.println(url);
-            if (url.contains("https://www.pixiv.net/artworks/") || url.contains("https://www.pixiv.net/member_illust.php")) {
+            if (url.contains("www.pixiv.net/artworks/") || url.contains("www.pixiv.net/member_illust.php")) {
                 Matcher matcher = Pattern.compile("[0-9]+").matcher(url);
                 if (matcher.find()) {
                     String id = matcher.group(0);
