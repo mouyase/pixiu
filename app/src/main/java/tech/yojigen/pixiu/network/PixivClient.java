@@ -19,6 +19,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 import okio.BufferedSource;
@@ -156,11 +157,23 @@ public class PixivClient {
             Request newRequest = request.newBuilder().url(newUrl).build();
             return chain.proceed(newRequest);
         };
+        Interceptor changeImageHostInterceptor = chain -> {
+            Request request = chain.request();
+            Response response = chain.proceed(request);
+            if (response.isSuccessful()) {
+                String jsonString = response.body().string();
+                jsonString = jsonString.replace("i.pximg.net", "pximg.project-imas.cn");
+                ResponseBody newBody = ResponseBody.create(response.body().contentType(), jsonString);
+                return response.newBuilder().body(newBody).build();
+            }
+            return response;
+        };
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         builder.addInterceptor(headerInterceptor);
         builder.addInterceptor(addTokenInterceptor);
         builder.addInterceptor(refreshTokenInterceptor);
+        builder.addInterceptor(changeImageHostInterceptor);
         builder.addInterceptor(httpLoggingInterceptor);
         switch (this.mode) {
             case MODE_NORMAL:
