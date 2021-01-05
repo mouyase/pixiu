@@ -3,7 +3,6 @@
     android:layout_height="match_parent"
     android:background="#666"
     android:orientation="vertical"
-    android:padding="@dimen/widget_margin"
     android:theme="@style/ThemeOverlay.Pixiu.AppWidgetContainer">
 
     <ImageView

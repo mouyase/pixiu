@@ -4,7 +4,4 @@
     <string name="INFO_TRANSITION_HEAD">INFO_TRANSITION_HEAD</string>
     <string name="INFO_TRANSITION_AT">INFO_TRANSITION_AT</string>
     <string name="INFO_TRANSITION_ARTIST">INFO_TRANSITION_ARTIST</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
 </resources>

@@ -8,7 +8,9 @@
     app:srlEnableLoadMore="true"
     app:srlEnableOverScrollBounce="false"
     app:srlEnableOverScrollDrag="false"
-    app:srlEnableRefresh="true">
+    app:srlEnableRefresh="true"
+    app:srlFooterTriggerRate="0.5"
+    app:srlHeaderTriggerRate="0.5">
 
     <com.scwang.smart.refresh.header.MaterialHeader
         android:layout_width="match_parent"

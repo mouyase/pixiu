@@ -13,8 +13,8 @@ android {
         applicationId "tech.yojigen.pixiu"
         minSdkVersion 25
         targetSdkVersion 30
-        versionCode 3
-        versionName "0.0.1"
+        versionCode 4
+        versionName "0.0.1 dev 4"
         multiDexEnabled true
     }
     viewBinding {
@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -77,7 +76,7 @@ dependencies {
     implementation 'com.scwang.smart:refresh-header-material:2.0.1'
     implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'
 
-    implementation 'com.tencent.bugly:crashreport_upgrade:1.4.2'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.5.0'
 }
 
 
