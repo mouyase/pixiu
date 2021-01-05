@@ -15,6 +15,7 @@ public class Value {
     public static final String SETTING_NETWORK_MODE = "SETTING_NETWORK_MODE";
     public static final String SETTING_PATH_URI = "SETTING_PATH_URI";
     public static final String SETTING_SAFE_MODE = "SETTING_SAFE_MODE";
+    public static final String SETTING_CDN_MODE = "SETTING_CDN_MODE";
     public static final String SETTING_LAST_VERSION = "SETTING_LAST_VERSION";
 
     public static final String PIXIV_APP_VERSION = "5.0.250";

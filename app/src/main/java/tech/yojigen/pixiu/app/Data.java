@@ -16,6 +16,15 @@ public class Data {
     private String pathUri;
     private int networkMode;
     private boolean isSafeMode;
+    private boolean isCDNMode;
+
+    public boolean isCDNMode() {
+        return isCDNMode;
+    }
+
+    public void setCDNMode(boolean CDNMode) {
+        isCDNMode = CDNMode;
+    }
 
     public boolean isSafeMode() {
         return isSafeMode;

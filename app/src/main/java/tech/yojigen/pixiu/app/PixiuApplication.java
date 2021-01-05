@@ -1,10 +1,7 @@
 package tech.yojigen.pixiu.app;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.net.Uri;
-import android.text.TextUtils;
 
 import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
@@ -66,6 +63,7 @@ public class PixiuApplication extends Application {
 //        }
         data.setNetworkMode(YSetting.get(Value.SETTING_NETWORK_MODE, PixivClient.MODE_NO_SNI));
         data.setSafeMode(YSetting.get(Value.SETTING_SAFE_MODE, true));
+        data.setCDNMode(YSetting.get(Value.SETTING_CDN_MODE, false));
     }
 
     public static Data getData() {

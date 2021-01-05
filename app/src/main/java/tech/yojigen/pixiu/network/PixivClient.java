@@ -173,7 +173,6 @@ public class PixivClient {
         builder.addInterceptor(headerInterceptor);
         builder.addInterceptor(addTokenInterceptor);
         builder.addInterceptor(refreshTokenInterceptor);
-        builder.addInterceptor(changeImageHostInterceptor);
         builder.addInterceptor(httpLoggingInterceptor);
         switch (this.mode) {
             case MODE_NORMAL:
@@ -192,22 +191,18 @@ public class PixivClient {
         this.mode = mode;
         switch (this.mode) {
             case MODE_NORMAL:
-                Value.URL_OAUTH = Value.MODE_NORMAL_URL_OAUTH;
-                Value.URL_ACCOUNT = Value.MODE_NORMAL_URL_ACCOUNT;
-                Value.URL_API = Value.MODE_NORMAL_URL_API;
-                System.out.println("切换到 MODE_NORMAL");
-                break;
             case MODE_NO_SNI:
                 Value.URL_OAUTH = Value.MODE_NORMAL_URL_OAUTH;
                 Value.URL_ACCOUNT = Value.MODE_NORMAL_URL_ACCOUNT;
                 Value.URL_API = Value.MODE_NORMAL_URL_API;
-                System.out.println("切换到 MODE_NO_SNI");
+//                System.out.println("切换到 MODE_NORMAL");
                 break;
+            //                System.out.println("切换到 MODE_NO_SNI");
             case MODE_PROXY:
                 Value.URL_OAUTH = Value.MODE_PROXY_URL_OAUTH;
                 Value.URL_ACCOUNT = Value.MODE_PROXY_URL_ACCOUNT;
                 Value.URL_API = Value.MODE_PROXY_URL_API;
-                System.out.println("切换到 MODE_PROXY");
+//                System.out.println("切换到 MODE_PROXY");
                 break;
         }
         YSetting.set(Value.SETTING_NETWORK_MODE, mode);
@@ -233,7 +228,19 @@ public class PixivClient {
                     .build();
             return chain.proceed(request);
         };
+        Interceptor changeImageHostInterceptor = chain -> {
+            Request request = chain.request();
+            String newUrl = request.url().toString();
+            if (PixiuApplication.getData().isCDNMode()) {
+                if (newUrl.contains("i.pximg.net")) {
+                    newUrl = newUrl.replace("i.pximg.net", "pximg.project-imas.cn");
+                }
+            }
+            Request newRequest = request.newBuilder().url(newUrl).build();
+            return chain.proceed(newRequest);
+        };
         builder.addInterceptor(headerInterceptor);
+        builder.addInterceptor(changeImageHostInterceptor);
         return builder.build();
     }
 

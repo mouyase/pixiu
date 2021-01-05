@@ -52,6 +52,15 @@ public class SettingActivity extends AppCompatActivity {
         }
         modeSelect.setOrientation(XUICommonListItemView.HORIZONTAL);
         modeSelect.setAccessoryType(XUICommonListItemView.ACCESSORY_TYPE_NONE);
+        XUICommonListItemView cdnMode = viewBinding.groupListView.createItemView("大陆图片优化");
+        cdnMode.setOrientation(XUICommonListItemView.VERTICAL);
+        cdnMode.setDetailText("实验性功能，可能会导致图片访问变慢");
+        cdnMode.setAccessoryType(XUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        cdnMode.getSwitch().setChecked(PixiuApplication.getData().isCDNMode());
+        cdnMode.getSwitch().setOnCheckedChangeListener((v, isChecked) -> {
+            YSetting.set(Value.SETTING_CDN_MODE, isChecked);
+            PixiuApplication.getData().setCDNMode(isChecked);
+        });
         XUIGroupListView.newSection(this)
                 .setTitle("网络设置")
                 .addItemView(modeSelect, v -> new MaterialDialog.Builder(this)
@@ -75,6 +84,8 @@ public class SettingActivity extends AppCompatActivity {
                             }
                         })
                         .show())
+                .addItemView(cdnMode, v -> {
+                })
                 .addTo(viewBinding.groupListView);
 
         pathSelect = viewBinding.groupListView.createItemView("选择图片保存目录");
