@@ -169,4 +169,13 @@ public class SearchResultActivity extends AppCompatActivity {
         runOnUiThread(() -> viewBinding.searchView.closeSearch());
         super.onPause();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (searchKey == null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
 }

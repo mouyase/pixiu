@@ -120,4 +120,13 @@ public class InfoActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (illust == null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
 }

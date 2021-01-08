@@ -329,4 +329,13 @@ public class IllustActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (bundleIllustDTO == null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
 }

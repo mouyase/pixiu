@@ -11,6 +11,5 @@
 
     </style>
 
-    <style name="ThemeOverlay.Pixiu.AppWidgetContainer" parent="">
-    </style>
+    <style name="ThemeOverlay.Pixiu.AppWidgetContainer" parent=""></style>
 </resources>

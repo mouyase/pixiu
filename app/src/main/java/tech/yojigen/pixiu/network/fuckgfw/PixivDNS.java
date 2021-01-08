@@ -34,7 +34,6 @@ public class PixivDNS implements Dns {
             "210.140.131.218",
             "210.140.131.219",
             "210.140.131.220",
-
     };
 
     private PixivDNS() {

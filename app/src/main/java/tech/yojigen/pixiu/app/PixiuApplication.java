@@ -56,11 +56,6 @@ public class PixiuApplication extends Application {
         }
         data.setFavouriteMap(new HashMap<>());
         data.setPathUri(YSetting.get(Value.SETTING_PATH_URI, ""));
-//        if (!TextUtils.isEmpty(data.getPathUri())) {
-//            getContentResolver().takePersistableUriPermission(Uri.parse(data.getPathUri()),
-//                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//        }
         data.setNetworkMode(YSetting.get(Value.SETTING_NETWORK_MODE, PixivClient.MODE_NO_SNI));
         data.setSafeMode(YSetting.get(Value.SETTING_SAFE_MODE, true));
         data.setCDNMode(YSetting.get(Value.SETTING_CDN_MODE, false));
