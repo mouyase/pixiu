@@ -13,8 +13,8 @@ android {
         applicationId "tech.yojigen.pixiu"
         minSdkVersion 25
         targetSdkVersion 30
-        versionCode 4
-        versionName "0.0.1 dev 4"
+        versionCode 5
+        versionName "0.0.1 dev 5"
         multiDexEnabled true
     }
     viewBinding {
