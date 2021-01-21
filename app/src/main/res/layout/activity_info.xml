@@ -39,6 +39,7 @@
                 android:layout_height="96dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:src="#DDD"
                 android:transitionName="@string/INFO_TRANSITION_HEAD"
                 app:riv_border_color="#DDD"
                 app:riv_border_width="3dp"

@@ -43,7 +43,7 @@ public class PixivClient {
     public static final int MODE_NO_SNI = 0x00002000;
     public static final int MODE_PROXY = 0x00003000;
 
-    private int mode = YSetting.get(Value.SETTING_NETWORK_MODE, MODE_NO_SNI);
+    private int mode = PixiuApplication.getData().getNetworkMode();
 
     public static PixivClient getInstance() {
         return mPixivClient;
@@ -146,12 +146,12 @@ public class PixivClient {
             Request request = chain.request();
             String newUrl = request.url().toString();
             if (this.mode == MODE_PROXY) {
-                if (newUrl.contains("128512.xyz")) {
-                    newUrl = newUrl.replace("128512.xyz", "pixiv.net");
-                }
-            } else {
                 if (newUrl.contains("pixiv.net")) {
                     newUrl = newUrl.replace("pixiv.net", "128512.xyz");
+                }
+            } else {
+                if (newUrl.contains("128512.xyz")) {
+                    newUrl = newUrl.replace("128512.xyz", "pixiv.net");
                 }
             }
             Request newRequest = request.newBuilder().url(newUrl).build();
@@ -241,6 +241,12 @@ public class PixivClient {
         };
         builder.addInterceptor(headerInterceptor);
         builder.addInterceptor(changeImageHostInterceptor);
+        switch (this.mode) {
+            case MODE_NO_SNI:
+                builder.sslSocketFactory(PixivSSLSocketFactory.getInstance(), PixivTrustManager.getInstance());
+                builder.dns(PixivDNS.getInstance());
+                break;
+        }
         return builder.build();
     }
 
