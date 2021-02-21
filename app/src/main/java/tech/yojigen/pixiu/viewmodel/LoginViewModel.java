@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import tech.yojigen.android.SingleLiveEvent;
 import tech.yojigen.pixiu.app.PixiuApplication;
+import tech.yojigen.pixiu.app.PixivOAuth;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.dto.CreateAccountDTO;
 import tech.yojigen.pixiu.dto.UserAccountDTO;
@@ -28,6 +29,38 @@ public class LoginViewModel extends ViewModel {
                 .set("client_id", Value.PIXIV_CLIENT_ID)
                 .set("client_secret", Value.PIXIV_CLIENT_SECRET)
                 .set("grant_type", "password")
+                .set("device_token", "pixiv")
+                .set("get_secure_url", true)
+                .set("include_policy", true)
+                .build();
+        PixivClient.getInstance().post(Value.URL_OAUTH, pixivData, new PixivCallback() {
+            @Override
+            public void onFailure() {
+                onLoginFailed.postValue();
+            }
+
+            @Override
+            public void onResponse(String body) {
+                UserAccountDTO userAccountDTO = gson.fromJson(body, UserAccountDTO.class);
+                YSetting.setObject(Value.SETTING_ACCOUNT, userAccountDTO);
+                PixiuApplication.getData().setUserAccount(userAccountDTO);
+                PixiuApplication.getData().setAccessToken(userAccountDTO.getAccessToken());
+                PixiuApplication.getData().setRefreshToken(userAccountDTO.getRefreshToken());
+                PixiuApplication.getData().setDeviceToken(userAccountDTO.getDeviceToken());
+                PixiuApplication.getData().setUser(userAccountDTO.getUser());
+                onLoginSuccess.postValue();
+            }
+        });
+    }
+
+    public void newLogin(String code) {
+        PixivData pixivData = new PixivData.Builder()
+                .set("client_id", Value.PIXIV_CLIENT_ID)
+                .set("client_secret", Value.PIXIV_CLIENT_SECRET)
+                .set("grant_type", "authorization_code")
+                .set("code", code)
+                .set("code_verifier", PixivOAuth.getInstance().getCodeVerifier())
+                .set("redirect_uri", Value.PIXIV_REDIRECT_URI)
                 .set("device_token", "pixiv")
                 .set("get_secure_url", true)
                 .set("include_policy", true)

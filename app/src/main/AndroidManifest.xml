@@ -35,7 +35,18 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".view.LoginActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="pixiv" />
+                <data android:host="account" />
+                <data android:pathPrefix="/login" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.RouterActivity"
             android:launchMode="singleTask">
