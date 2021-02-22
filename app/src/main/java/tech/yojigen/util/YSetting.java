@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -77,6 +78,17 @@ public class YSetting {
             Object value = settingMap.get(key);
             if (value instanceof String) {
                 return gson.fromJson((String) value, classOfT);
+            }
+        }
+        return null;
+    }
+    public static <T> T getObject(String key, Type typeOfT) {
+        Gson gson = new Gson();
+        Map<String, ?> settingMap = YUtil.getInstance().getContext().getSharedPreferences(YUtil.getInstance().getContext().getPackageName() + ".setting", Context.MODE_PRIVATE).getAll();
+        if (settingMap.containsKey(key)) {
+            Object value = settingMap.get(key);
+            if (value instanceof String) {
+                return gson.fromJson((String) value, typeOfT);
             }
         }
         return null;

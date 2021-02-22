@@ -24,7 +24,6 @@ import com.xuexiang.xui.widget.searchview.MaterialSearchView;
 
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.adapter.ImageListAdapter;
-import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivitySearchResultBinding;
 import tech.yojigen.pixiu.viewmodel.SearchResultViewModel;
 import tech.yojigen.util.YBundle;
@@ -40,7 +39,7 @@ public class SearchResultActivity extends AppCompatActivity {
         viewBinding = ActivitySearchResultBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
-        searchKey = YBundle.get(getIntent());
+        searchKey = YBundle.get(getIntent(), String.class);
 
         initViewModel();
         initView();
@@ -65,7 +64,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(SearchResultActivity.this, SearchResultActivity.class);
-                YBundle.set(intent,query);
+                YBundle.set(intent, query);
                 startActivity(intent);
                 return false;
             }
@@ -152,7 +151,7 @@ public class SearchResultActivity extends AppCompatActivity {
             });
             imageListAdapter.setListListener((v, illust, p) -> {
                 Intent intent = new Intent(SearchResultActivity.this, IllustActivity.class);
-                YBundle.set(intent,viewModel.getBundle(position, p));
+                YBundle.set(intent, viewModel.getBundle(position, p));
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchResultActivity.this, v, illust.getId());
                 ActivityCompat.startActivity(SearchResultActivity.this, intent, options.toBundle());
             });

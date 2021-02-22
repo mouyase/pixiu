@@ -29,6 +29,7 @@ import java.util.Locale;
 import tech.yojigen.pixiu.R;
 import tech.yojigen.pixiu.app.Value;
 import tech.yojigen.pixiu.databinding.ActivityInfoBinding;
+import tech.yojigen.pixiu.dto.BundleIllustDTO;
 import tech.yojigen.pixiu.dto.IllustDTO;
 import tech.yojigen.pixiu.dto.TagDTO;
 import tech.yojigen.util.YBundle;
@@ -44,7 +45,7 @@ public class InfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        illust = YBundle.get(getIntent());
+        illust = YBundle.get(getIntent(), IllustDTO.class);
         viewBinding = ActivityInfoBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         initView();
