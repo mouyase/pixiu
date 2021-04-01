@@ -18,7 +18,7 @@ public class Value {
     public static final String SETTING_CDN_MODE = "SETTING_CDN_MODE";
     public static final String SETTING_LAST_VERSION = "SETTING_LAST_VERSION";
 
-    public static final String PIXIV_APP_VERSION = "5.0.200";
+    public static final String PIXIV_APP_VERSION = "6.0.0";
     public static final String PIXIV_ACCEPT_LANGUAGE = "zh_CN";
     public static final String PIXIV_APP_OS = "Android";
     public static final String PIXIV_APP_OS_VERSION = Build.VERSION.RELEASE;
