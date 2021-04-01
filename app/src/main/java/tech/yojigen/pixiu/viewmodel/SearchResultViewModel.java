@@ -1,6 +1,7 @@
 package tech.yojigen.pixiu.viewmodel;
 
 import android.annotation.SuppressLint;
+import android.os.SystemClock;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -132,8 +133,15 @@ public class SearchResultViewModel extends ViewModel {
                     illustListList.get(index).postValue(illustListList.get(index).getValue());
                     isLoadingList.set(index, false);
                     nextTimesList.set(index, nextTimesList.get(index) + 1);
-                    if (illustListDTO.getIllustList().size() < 0) {
-                        getData(index);
+                    if (illustListDTO.getIllustList().size() < 0 || illustListList.get(index).getValue().size() < 30) {
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                super.run();
+                                SystemClock.sleep(500);
+                                getData(index);
+                            }
+                        }.start();
                     }
                 }
             });
