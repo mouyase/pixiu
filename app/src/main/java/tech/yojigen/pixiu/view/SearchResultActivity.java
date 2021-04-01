@@ -39,7 +39,7 @@ public class SearchResultActivity extends AppCompatActivity {
         viewBinding = ActivitySearchResultBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
-        searchKey = YBundle.get(getIntent(), String.class);
+        searchKey = YBundle.get(getIntent());
 
         initViewModel();
         initView();

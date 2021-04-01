@@ -45,14 +45,14 @@ public class InfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        illust = YBundle.get(getIntent(), IllustDTO.class);
+        illust = YBundle.get(getIntent());
         viewBinding = ActivityInfoBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         initView();
     }
 
     @SuppressLint("SimpleDateFormat")
-//    2020年12月21日早上6点48分
+    // 2020年12月21日早上6点48分
     private SimpleDateFormat viewDateFormat = new SimpleDateFormat("yyyy年MM月dd日hh点mm分", Locale.CHINA);
     private SimpleDateFormat reFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.JAPAN);
 

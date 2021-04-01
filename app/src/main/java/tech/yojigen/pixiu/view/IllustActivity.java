@@ -64,7 +64,7 @@ public class IllustActivity extends AppCompatActivity {
         viewBinding = ActivityIllustBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
-        bundleIllustDTO = YBundle.get(getIntent(), BundleIllustDTO.class);
+        bundleIllustDTO = YBundle.get(getIntent());
 
         initViewModel();
         initView();
