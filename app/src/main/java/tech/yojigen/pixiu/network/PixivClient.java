@@ -233,7 +233,7 @@ public class PixivClient {
             String newUrl = request.url().toString();
             if (PixiuApplication.getData().isCDNMode()) {
                 if (newUrl.contains("i.pximg.net")) {
-                    newUrl = newUrl.replace("i.pximg.net", "pximg.project-imas.cn");
+                    newUrl = newUrl.replace("i.pximg.net", "i.pixiv.cat");
                 }
             }
             Request newRequest = request.newBuilder().url(newUrl).build();
